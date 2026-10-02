@@ -1,0 +1,506 @@
+﻿2026-10-02T16:42:03.1773919Z Current runner version: '2.337.0'
+2026-10-02T16:42:03.1804708Z ##[group]Runner Image Provisioner
+2026-10-02T16:42:03.1805708Z Hosted Compute Agent
+2026-10-02T16:42:03.1806469Z Version: 20260901.588
+2026-10-02T16:42:03.1807146Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-02T16:42:03.1807911Z Build Date: 2026-09-01T19:56:44Z
+2026-10-02T16:42:03.1808745Z Worker ID: {ddb2f4c4-e6dd-4d9f-9b0c-cc8471a24054}
+2026-10-02T16:42:03.1809833Z Azure Region: northcentralus
+2026-10-02T16:42:03.1810597Z ##[endgroup]
+2026-10-02T16:42:03.1812523Z ##[group]Operating System
+2026-10-02T16:42:03.1813162Z Ubuntu
+2026-10-02T16:42:03.1813856Z 24.04.5
+2026-10-02T16:42:03.1814401Z LTS
+2026-10-02T16:42:03.1815377Z ##[endgroup]
+2026-10-02T16:42:03.1816054Z ##[group]Runner Image
+2026-10-02T16:42:03.1816711Z Image: ubuntu-24.04-arm
+2026-10-02T16:42:03.1817437Z Version: 20260927.135.1
+2026-10-02T16:42:03.1818824Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24-arm64/20260927.135/images/ubuntu/Ubuntu2404-Arm64-Readme.md
+2026-10-02T16:42:03.1820867Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24-arm64%2F20260927.135
+2026-10-02T16:42:03.1821883Z ##[endgroup]
+2026-10-02T16:42:03.1823132Z ##[group]GITHUB_TOKEN Permissions
+2026-10-02T16:42:03.1826336Z Contents: read
+2026-10-02T16:42:03.1827112Z Metadata: read
+2026-10-02T16:42:03.1827678Z ##[endgroup]
+2026-10-02T16:42:03.1830694Z Secret source: Actions
+2026-10-02T16:42:03.1831915Z Cache mode: write
+2026-10-02T16:42:03.1833051Z Prepare workflow directory
+2026-10-02T16:42:03.2223279Z Prepare all required actions
+2026-10-02T16:42:03.2274657Z Getting action download info
+2026-10-02T16:42:03.4680645Z Download action repository 'actions/checkout@v7.0.1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-02T16:42:03.5875147Z Download action repository 'actions/upload-artifact@v7.0.1' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-10-02T16:42:03.7646851Z Complete job name: linux (arm64, ubuntu-24.04-arm, linux/arm64)
+2026-10-02T16:42:03.8534738Z ##[group]Run actions/checkout@v7.0.1
+2026-10-02T16:42:03.8536046Z with:
+2026-10-02T16:42:03.8536778Z   repository: 0then0/exitscope
+2026-10-02T16:42:03.8541069Z   token: ***
+2026-10-02T16:42:03.8541660Z   ssh-strict: true
+2026-10-02T16:42:03.8542705Z   ssh-user: git
+2026-10-02T16:42:03.8543290Z   persist-credentials: true
+2026-10-02T16:42:03.8543999Z   clean: true
+2026-10-02T16:42:03.8544594Z   sparse-checkout-cone-mode: true
+2026-10-02T16:42:03.8545212Z   fetch-depth: 1
+2026-10-02T16:42:03.8545855Z   fetch-tags: false
+2026-10-02T16:42:03.8546422Z   show-progress: true
+2026-10-02T16:42:03.8547045Z   lfs: false
+2026-10-02T16:42:03.8547585Z   submodules: false
+2026-10-02T16:42:03.8548182Z   set-safe-directory: true
+2026-10-02T16:42:03.8548864Z   allow-unsafe-pr-checkout: false
+2026-10-02T16:42:03.8550246Z ##[endgroup]
+2026-10-02T16:42:03.9422071Z Syncing repository: 0then0/exitscope
+2026-10-02T16:42:03.9424412Z ##[group]Getting Git version info
+2026-10-02T16:42:03.9425548Z Working directory is '/home/runner/work/exitscope/exitscope'
+2026-10-02T16:42:03.9426942Z [command]/usr/bin/git version
+2026-10-02T16:42:03.9502255Z git version 2.55.0
+2026-10-02T16:42:03.9519495Z ##[endgroup]
+2026-10-02T16:42:03.9534361Z Temporarily overriding HOME='/home/runner/work/_temp/5a676167-3f95-46fa-9b95-3c8e91050e28' before making global git config changes
+2026-10-02T16:42:03.9535813Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T16:42:03.9540399Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/exitscope/exitscope
+2026-10-02T16:42:03.9569319Z Deleting the contents of '/home/runner/work/exitscope/exitscope'
+2026-10-02T16:42:03.9574073Z ##[group]Determining repository object format
+2026-10-02T16:42:03.9580087Z ##[endgroup]
+2026-10-02T16:42:03.9589005Z ##[group]Initializing the repository
+2026-10-02T16:42:03.9590209Z [command]/usr/bin/git init /home/runner/work/exitscope/exitscope
+2026-10-02T16:42:03.9692710Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-02T16:42:03.9694943Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-02T16:42:03.9696714Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-02T16:42:03.9697645Z hint: call:
+2026-10-02T16:42:03.9698254Z hint:
+2026-10-02T16:42:03.9699364Z hint: 	git config --global init.defaultBranch <name>
+2026-10-02T16:42:03.9700206Z hint:
+2026-10-02T16:42:03.9701039Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-02T16:42:03.9702078Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-02T16:42:03.9702879Z hint:
+2026-10-02T16:42:03.9703553Z hint: 	git branch -m <name>
+2026-10-02T16:42:03.9704206Z hint:
+2026-10-02T16:42:03.9705024Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-02T16:42:03.9706095Z Initialized empty Git repository in /home/runner/work/exitscope/exitscope/.git/
+2026-10-02T16:42:03.9708573Z [command]/usr/bin/git remote add origin https://github.com/0then0/exitscope
+2026-10-02T16:42:03.9747731Z ##[endgroup]
+2026-10-02T16:42:03.9748816Z ##[group]Disabling automatic garbage collection
+2026-10-02T16:42:03.9756883Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-02T16:42:03.9805340Z ##[endgroup]
+2026-10-02T16:42:03.9806735Z ##[group]Setting up auth
+2026-10-02T16:42:03.9807485Z Removing SSH command configuration
+2026-10-02T16:42:03.9808506Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T16:42:03.9828669Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T16:42:04.0124766Z Removing HTTP extra header
+2026-10-02T16:42:04.0130362Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T16:42:04.0160996Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T16:42:04.0346964Z Removing includeIf entries pointing to credentials config files
+2026-10-02T16:42:04.0351818Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T16:42:04.0380896Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T16:42:04.0572189Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-02T16:42:04.0612322Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/exitscope/exitscope/.git.path /home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:42:04.0642284Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/exitscope/exitscope/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:42:04.0672719Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:42:04.0701786Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:42:04.0729785Z ##[endgroup]
+2026-10-02T16:42:04.0730836Z ##[group]Fetching the repository
+2026-10-02T16:42:04.0735836Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +0ca099a34431a4cc436e4232bdcf93f6f6544407:refs/remotes/origin/main
+2026-10-02T16:42:04.4514386Z From https://github.com/0then0/exitscope
+2026-10-02T16:42:04.4516743Z  * [new ref]         0ca099a34431a4cc436e4232bdcf93f6f6544407 -> origin/main
+2026-10-02T16:42:04.4520028Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-02T16:42:04.4521830Z   origin/main
+2026-10-02T16:42:04.4523563Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-02T16:42:04.4531253Z 0ca099a34431a4cc436e4232bdcf93f6f6544407
+2026-10-02T16:42:04.4535296Z ##[endgroup]
+2026-10-02T16:42:04.4537035Z ##[group]Determining the checkout info
+2026-10-02T16:42:04.4538742Z ##[endgroup]
+2026-10-02T16:42:04.4539978Z [command]/usr/bin/git sparse-checkout disable
+2026-10-02T16:42:04.4577167Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-02T16:42:04.4609594Z ##[group]Checking out the ref
+2026-10-02T16:42:04.4611639Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-02T16:42:04.4747195Z Switched to a new branch 'main'
+2026-10-02T16:42:04.4749757Z branch 'main' set up to track 'origin/main'.
+2026-10-02T16:42:04.4763327Z ##[endgroup]
+2026-10-02T16:42:04.4798068Z [command]/usr/bin/git log -1 --format=%H
+2026-10-02T16:42:04.4822750Z 0ca099a34431a4cc436e4232bdcf93f6f6544407
+2026-10-02T16:42:04.5093320Z ##[group]Run # Keep the report parent writable by the ordinary host runner too.
+2026-10-02T16:42:04.5095415Z [36;1m# Keep the report parent writable by the ordinary host runner too.[0m
+2026-10-02T16:42:04.5096955Z [36;1mmkdir -p "validation/ci/arm64"[0m
+2026-10-02T16:42:04.5098227Z [36;1mdocker run --rm --init --privileged --cgroupns=private \[0m
+2026-10-02T16:42:04.5099724Z [36;1m  --platform linux/arm64 \[0m
+2026-10-02T16:42:04.5100799Z [36;1m  -v "$PWD:/work" -w /work \[0m
+2026-10-02T16:42:04.5101726Z [36;1m  rust:1.99.0 sh -c '[0m
+2026-10-02T16:42:04.5102624Z [36;1m    set -eu[0m
+2026-10-02T16:42:04.5103423Z [36;1m    reports=validation/ci/arm64[0m
+2026-10-02T16:42:04.5104391Z [36;1m    mkdir -p "$reports"[0m
+2026-10-02T16:42:04.5105822Z [36;1m    { cat /etc/os-release; uname -a; rustc --version; } > "$reports/environment.txt"[0m
+2026-10-02T16:42:04.5107386Z [36;1m    cat "$reports/environment.txt"[0m
+2026-10-02T16:42:04.5108693Z [36;1m    if [ "arm64" = arm64 ]; then[0m
+2026-10-02T16:42:04.5110062Z [36;1m      rustup component add rustfmt clippy[0m
+2026-10-02T16:42:04.5111192Z [36;1m      cargo fmt --check[0m
+2026-10-02T16:42:04.5112341Z [36;1m      cargo clippy --locked --all-targets -- -D warnings[0m
+2026-10-02T16:42:04.5113480Z [36;1m    fi[0m
+2026-10-02T16:42:04.5114535Z [36;1m    mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro[0m
+2026-10-02T16:42:04.5116053Z [36;1m    mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro[0m
+2026-10-02T16:42:04.5117520Z [36;1m    mount -o remount,bind,ro /tmp/exitscope-ro[0m
+2026-10-02T16:42:04.5118589Z [36;1m    status=0[0m
+2026-10-02T16:42:04.5119840Z [36;1m    EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests \[0m
+2026-10-02T16:42:04.5121587Z [36;1m    EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 \[0m
+2026-10-02T16:42:04.5123370Z [36;1m    EXITSCOPE_REPORTS="$reports" sh scripts/linux-checks.sh || status=1[0m
+2026-10-02T16:42:04.5125300Z [36;1m    python3 tests/delegation.py --cgroup-parent /sys/fs/cgroup/exitscope-tests \[0m
+2026-10-02T16:42:04.5126928Z [36;1m      --reports "$reports/delegation" || status=1[0m
+2026-10-02T16:42:04.5128485Z [36;1m    python3 scripts/external.py --cgroup-parent /sys/fs/cgroup/exitscope-tests \[0m
+2026-10-02T16:42:04.5130474Z [36;1m      --reports "$reports/external" || status=1[0m
+2026-10-02T16:42:04.5131539Z [36;1m    exit "$status"[0m
+2026-10-02T16:42:04.5132409Z [36;1m  '[0m
+2026-10-02T16:42:04.5249553Z shell: /usr/bin/bash -e {0}
+2026-10-02T16:42:04.5250490Z ##[endgroup]
+2026-10-02T16:42:04.6205256Z Unable to find image 'rust:1.99.0' locally
+2026-10-02T16:42:05.0495471Z 1.99.0: Pulling from library/rust
+2026-10-02T16:42:05.1694752Z ccd9dba13ae3: Pulling fs layer
+2026-10-02T16:42:05.1696404Z 1a48a960533f: Pulling fs layer
+2026-10-02T16:42:05.1697087Z 8dbc42934ae5: Pulling fs layer
+2026-10-02T16:42:05.1697963Z 509699aefca8: Pulling fs layer
+2026-10-02T16:42:05.1698319Z 6456789b84d0: Pulling fs layer
+2026-10-02T16:42:05.1698753Z 509699aefca8: Waiting
+2026-10-02T16:42:05.1699332Z 6456789b84d0: Waiting
+2026-10-02T16:42:05.3337794Z 1a48a960533f: Verifying Checksum
+2026-10-02T16:42:05.3346323Z 1a48a960533f: Download complete
+2026-10-02T16:42:05.3999643Z ccd9dba13ae3: Verifying Checksum
+2026-10-02T16:42:05.4002070Z ccd9dba13ae3: Download complete
+2026-10-02T16:42:05.4463021Z 8dbc42934ae5: Verifying Checksum
+2026-10-02T16:42:05.4464089Z 8dbc42934ae5: Download complete
+2026-10-02T16:42:05.9753208Z 6456789b84d0: Verifying Checksum
+2026-10-02T16:42:05.9754818Z 6456789b84d0: Download complete
+2026-10-02T16:42:06.0436486Z 509699aefca8: Verifying Checksum
+2026-10-02T16:42:06.0437436Z 509699aefca8: Download complete
+2026-10-02T16:42:06.8639683Z ccd9dba13ae3: Pull complete
+2026-10-02T16:42:11.6225735Z 1a48a960533f: Pull complete
+2026-10-02T16:42:14.1838888Z 8dbc42934ae5: Pull complete
+2026-10-02T16:42:21.3359907Z 509699aefca8: Pull complete
+2026-10-02T16:42:24.6088279Z 6456789b84d0: Pull complete
+2026-10-02T16:42:24.6134844Z Digest: sha256:cb1b90b0ce00f9eb950c4de62cc1bb89c7bf8a3577de6600d10e31fb15f876de
+2026-10-02T16:42:24.6150893Z Status: Downloaded newer image for rust:1.99.0
+2026-10-02T16:42:24.7572535Z PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+2026-10-02T16:42:24.7573629Z NAME="Debian GNU/Linux"
+2026-10-02T16:42:24.7574241Z VERSION_ID="13"
+2026-10-02T16:42:24.7579666Z VERSION="13 (trixie)"
+2026-10-02T16:42:24.7581280Z VERSION_CODENAME=trixie
+2026-10-02T16:42:24.7610366Z DEBIAN_VERSION_FULL=13.7
+2026-10-02T16:42:24.7621947Z ID=debian
+2026-10-02T16:42:24.7630184Z HOME_URL="https://www.debian.org/"
+2026-10-02T16:42:24.7630599Z SUPPORT_URL="https://www.debian.org/support"
+2026-10-02T16:42:24.7631087Z BUG_REPORT_URL="https://bugs.debian.org/"
+2026-10-02T16:42:24.7631602Z Linux 6a6b6784ce7d 6.17.0-1022-azure #22-Ubuntu SMP Mon Jul 27 17:12:01 UTC 2026 aarch64 GNU/Linux
+2026-10-02T16:42:24.7632062Z rustc 1.99.0 (b940084d7 2026-09-28)
+2026-10-02T16:42:24.8291978Z info: downloading 2 components
+2026-10-02T16:42:25.4369969Z     Updating crates.io index
+2026-10-02T16:42:25.5332395Z  Downloading crates ...
+2026-10-02T16:42:25.5535375Z   Downloaded anstyle-query v1.1.5
+2026-10-02T16:42:25.5551075Z   Downloaded anstyle v1.0.14
+2026-10-02T16:42:25.5560277Z   Downloaded anstyle-parse v1.0.0
+2026-10-02T16:42:25.5577879Z   Downloaded anstream v1.0.0
+2026-10-02T16:42:25.5592984Z   Downloaded quote v1.0.47
+2026-10-02T16:42:25.5609661Z   Downloaded memchr v2.8.3
+2026-10-02T16:42:25.5644306Z   Downloaded serde_core v1.0.229
+2026-10-02T16:42:25.5660520Z   Downloaded colorchoice v1.0.5
+2026-10-02T16:42:25.5671754Z   Downloaded proc-macro2 v1.0.107
+2026-10-02T16:42:25.5687261Z   Downloaded bitflags v2.13.2
+2026-10-02T16:42:25.5719588Z   Downloaded is_terminal_polyfill v1.70.2
+2026-10-02T16:42:25.5723083Z   Downloaded itoa v1.0.18
+2026-10-02T16:42:25.5733188Z   Downloaded serde v1.0.229
+2026-10-02T16:42:25.5756828Z   Downloaded autocfg v1.5.1
+2026-10-02T16:42:25.5767997Z   Downloaded unicode-ident v1.0.26
+2026-10-02T16:42:25.5785820Z   Downloaded clap_lex v1.1.1
+2026-10-02T16:42:25.5793795Z   Downloaded strsim v0.11.1
+2026-10-02T16:42:25.5802122Z   Downloaded utf8parse v0.2.2
+2026-10-02T16:42:25.5807786Z   Downloaded clap_derive v4.6.7
+2026-10-02T16:42:25.5823579Z   Downloaded memoffset v0.9.1
+2026-10-02T16:42:25.5831708Z   Downloaded serde_json v1.0.151
+2026-10-02T16:42:25.5877889Z   Downloaded zmij v1.0.23
+2026-10-02T16:42:25.5889449Z   Downloaded heck v0.5.0
+2026-10-02T16:42:25.5897764Z   Downloaded cfg_aliases v0.2.2
+2026-10-02T16:42:25.5903799Z   Downloaded nix v0.31.3
+2026-10-02T16:42:25.5977418Z   Downloaded clap v4.6.7
+2026-10-02T16:42:25.6035862Z   Downloaded serde_derive v1.0.229
+2026-10-02T16:42:25.6055488Z   Downloaded clap_builder v4.6.7
+2026-10-02T16:42:25.6095884Z   Downloaded syn v3.0.6
+2026-10-02T16:42:25.6164370Z   Downloaded libc v0.2.189
+2026-10-02T16:42:25.6434631Z   Downloaded cfg-if v1.0.5
+2026-10-02T16:42:25.6585431Z    Compiling proc-macro2 v1.0.107
+2026-10-02T16:42:25.6600423Z    Compiling quote v1.0.47
+2026-10-02T16:42:25.6601193Z    Compiling unicode-ident v1.0.26
+2026-10-02T16:42:25.6601687Z    Compiling serde_core v1.0.229
+2026-10-02T16:42:25.7049968Z    Compiling autocfg v1.5.1
+2026-10-02T16:42:25.8143920Z     Checking utf8parse v0.2.2
+2026-10-02T16:42:25.8352768Z    Compiling zmij v1.0.23
+2026-10-02T16:42:25.8534090Z     Checking anstyle-parse v1.0.0
+2026-10-02T16:42:25.9137421Z    Compiling cfg_aliases v0.2.2
+2026-10-02T16:42:25.9318129Z     Checking is_terminal_polyfill v1.70.2
+2026-10-02T16:42:25.9563312Z     Checking anstyle-query v1.1.5
+2026-10-02T16:42:25.9600691Z    Compiling memoffset v0.9.1
+2026-10-02T16:42:25.9796144Z     Checking colorchoice v1.0.5
+2026-10-02T16:42:25.9842577Z     Checking anstyle v1.0.14
+2026-10-02T16:42:26.0057948Z    Compiling libc v0.2.189
+2026-10-02T16:42:26.0619966Z     Checking anstream v1.0.0
+2026-10-02T16:42:26.1248525Z    Compiling nix v0.31.3
+2026-10-02T16:42:26.3132490Z    Compiling syn v3.0.6
+2026-10-02T16:42:26.3272397Z     Checking clap_lex v1.1.1
+2026-10-02T16:42:26.3273206Z    Compiling serde_json v1.0.151
+2026-10-02T16:42:26.3833006Z     Checking strsim v0.11.1
+2026-10-02T16:42:26.4355429Z    Compiling serde v1.0.229
+2026-10-02T16:42:26.4470307Z    Compiling heck v0.5.0
+2026-10-02T16:42:26.5516796Z     Checking clap_builder v4.6.7
+2026-10-02T16:42:27.5257192Z     Checking itoa v1.0.18
+2026-10-02T16:42:27.5351674Z     Checking cfg-if v1.0.5
+2026-10-02T16:42:27.5494476Z     Checking bitflags v2.13.2
+2026-10-02T16:42:27.5917461Z     Checking memchr v2.8.3
+2026-10-02T16:42:28.3769473Z    Compiling clap_derive v4.6.7
+2026-10-02T16:42:28.3770248Z    Compiling serde_derive v1.0.229
+2026-10-02T16:42:29.3677524Z     Checking clap v4.6.7
+2026-10-02T16:42:30.2274600Z     Checking exitscope v0.1.1 (/work)
+2026-10-02T16:42:30.5890981Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.17s
+2026-10-02T16:42:30.6666145Z test_systemd_diagnostics_do_not_save_manager_environment (__main__.Documentation.test_systemd_diagnostics_do_not_save_manager_environment) ... ok
+2026-10-02T16:42:30.6667008Z 
+2026-10-02T16:42:30.6667185Z ----------------------------------------------------------------------
+2026-10-02T16:42:30.6667546Z Ran 1 test in 0.013s
+2026-10-02T16:42:30.6667693Z 
+2026-10-02T16:42:30.6667760Z OK
+2026-10-02T16:42:30.7934433Z test_failure_preserves_status_and_diagnostics_and_stops_unit (__main__.SystemdTimeout.test_failure_preserves_status_and_diagnostics_and_stops_unit) ... ok
+2026-10-02T16:42:36.1384242Z test_hung_client_is_killed_and_unit_stopped (__main__.SystemdTimeout.test_hung_client_is_killed_and_unit_stopped) ... ok
+2026-10-02T16:42:36.4992780Z test_hung_stop_is_bounded_and_cannot_turn_into_success (__main__.SystemdTimeout.test_hung_stop_is_bounded_and_cannot_turn_into_success) ... ok
+2026-10-02T16:42:36.5591991Z test_successful_collected_unit_is_not_stopped_again (__main__.SystemdTimeout.test_successful_collected_unit_is_not_stopped_again) ... ok
+2026-10-02T16:42:36.5592569Z 
+2026-10-02T16:42:36.5594308Z ----------------------------------------------------------------------
+2026-10-02T16:42:36.5594846Z Ran 4 tests in 5.847s
+2026-10-02T16:42:36.5595009Z 
+2026-10-02T16:42:36.6151139Z OK
+2026-10-02T16:42:36.6151731Z    Compiling utf8parse v0.2.2
+2026-10-02T16:42:36.6153052Z    Compiling colorchoice v1.0.5
+2026-10-02T16:42:36.6153881Z    Compiling anstyle-query v1.1.5
+2026-10-02T16:42:36.6158505Z    Compiling anstyle v1.0.14
+2026-10-02T16:42:36.6490993Z    Compiling anstyle-parse v1.0.0
+2026-10-02T16:42:36.6504151Z    Compiling is_terminal_polyfill v1.70.2
+2026-10-02T16:42:36.6513367Z    Compiling serde_core v1.0.229
+2026-10-02T16:42:36.6857632Z    Compiling clap_lex v1.1.1
+2026-10-02T16:42:36.7382969Z    Compiling anstream v1.0.0
+2026-10-02T16:42:36.7460652Z    Compiling strsim v0.11.1
+2026-10-02T16:42:36.8265829Z    Compiling memoffset v0.9.1
+2026-10-02T16:42:36.8521155Z    Compiling zmij v1.0.23
+2026-10-02T16:42:36.9520960Z    Compiling clap_builder v4.6.7
+2026-10-02T16:42:37.0043925Z    Compiling libc v0.2.189
+2026-10-02T16:42:37.0707573Z    Compiling cfg-if v1.0.5
+2026-10-02T16:42:37.0916006Z    Compiling bitflags v2.13.2
+2026-10-02T16:42:37.2177218Z    Compiling itoa v1.0.18
+2026-10-02T16:42:37.3206154Z    Compiling memchr v2.8.3
+2026-10-02T16:42:37.9633034Z    Compiling nix v0.31.3
+2026-10-02T16:42:38.1634965Z    Compiling serde v1.0.229
+2026-10-02T16:42:38.2774324Z    Compiling serde_json v1.0.151
+2026-10-02T16:42:38.5836520Z    Compiling clap v4.6.7
+2026-10-02T16:42:39.5364773Z    Compiling exitscope v0.1.1 (/work)
+2026-10-02T16:42:40.3410483Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 3.76s
+2026-10-02T16:42:40.3901690Z      Running unittests src/main.rs (target/debug/deps/exitscope-9979f6d8cdb887c9)
+2026-10-02T16:42:40.3913118Z 
+2026-10-02T16:42:40.3914394Z running 13 tests
+2026-10-02T16:42:40.3924664Z test linux::tests::proc_identity_is_own_process ... ok
+2026-10-02T16:42:40.3926505Z test model::tests::cleanup_cannot_erase_violation ... ok
+2026-10-02T16:42:40.3927569Z test model::tests::absent_telemetry_is_unresolved ... ok
+2026-10-02T16:42:40.3929459Z test model::tests::late_empty_snapshot_is_unresolved ... ok
+2026-10-02T16:42:40.3930069Z test model::tests::disabled_receipt_allows_late_evidence ... ok
+2026-10-02T16:42:40.3930595Z test model::tests::late_receipt_cannot_use_longer_output_deadline ... ok
+2026-10-02T16:42:40.3931152Z test linux::tests::pidfd_reports_exit_without_reaping ... ok
+2026-10-02T16:42:40.3931693Z test model::tests::missing_receipt_depends_on_confirmed_readiness ... ok
+2026-10-02T16:42:40.3932195Z test model::tests::late_receipt_without_readiness_is_unresolved ... ok
+2026-10-02T16:42:40.3933281Z test model::tests::missing_wait_evidence_does_not_claim_early_root_exit ... ok
+2026-10-02T16:42:40.3933878Z test model::tests::receipt_deadline_is_inclusive_and_relative_to_impact ... ok
+2026-10-02T16:42:40.3934470Z test model::tests::verified_contract_passes ... ok
+2026-10-02T16:42:40.3934857Z test model::tests::signal_and_wait_are_required ... ok
+2026-10-02T16:42:40.3935108Z 
+2026-10-02T16:42:40.3935410Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-02T16:42:40.3935803Z 
+2026-10-02T16:42:40.4202891Z    Compiling exitscope v0.1.1 (/work)
+2026-10-02T16:42:41.6068108Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.20s
+2026-10-02T16:42:41.6648644Z test_bad_working_directory (__main__.Integration.test_bad_working_directory) ... ok
+2026-10-02T16:42:42.2926472Z test_correct_forwarding (__main__.Integration.test_correct_forwarding) ... ok
+2026-10-02T16:42:42.3058911Z test_exec_failure (__main__.Integration.test_exec_failure) ... ok
+2026-10-02T16:42:42.3193884Z test_exec_permission_denied (__main__.Integration.test_exec_permission_denied) ... ok
+2026-10-02T16:42:42.9534622Z test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched) ... ok
+2026-10-02T16:42:43.5844936Z test_group_kill (__main__.Integration.test_group_kill) ... ok
+2026-10-02T16:42:44.2302761Z test_intentional_background_contract (__main__.Integration.test_intentional_background_contract) ... ok
+2026-10-02T16:42:44.2635080Z test_interruption (__main__.Integration.test_interruption) ... ok
+2026-10-02T16:42:44.8972291Z test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass) ... ok
+2026-10-02T16:42:44.9742174Z test_live_root_during_unfinished_cleanup (__main__.Integration.test_live_root_during_unfinished_cleanup) ... ok
+2026-10-02T16:42:45.6208914Z test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes) ... ok
+2026-10-02T16:42:46.2375309Z test_missing_telemetry (__main__.Integration.test_missing_telemetry) ... ok
+2026-10-02T16:42:46.2396731Z test_no_permissions (__main__.Integration.test_no_permissions) ... ok
+2026-10-02T16:42:46.2416488Z test_not_cgroup (__main__.Integration.test_not_cgroup) ... ok
+2026-10-02T16:42:46.8732680Z test_optional_late_cleanup (__main__.Integration.test_optional_late_cleanup) ... ok
+2026-10-02T16:42:47.5090459Z test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve) ... ok
+2026-10-02T16:42:48.1442176Z test_premature_worker (__main__.Integration.test_premature_worker) ... ok
+2026-10-02T16:42:49.3537627Z test_readiness_failure (__main__.Integration.test_readiness_failure) ... ok
+2026-10-02T16:42:49.9873543Z test_root_does_not_wait (__main__.Integration.test_root_does_not_wait) ... ok
+2026-10-02T16:42:50.6255245Z test_survivor_other_group (__main__.Integration.test_survivor_other_group) ... ok
+2026-10-02T16:42:51.2641143Z test_survivor_other_session (__main__.Integration.test_survivor_other_session) ... ok
+2026-10-02T16:42:51.9019586Z test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof) ... ok
+2026-10-02T16:42:52.5360593Z test_wrong_signal (__main__.Integration.test_wrong_signal) ... ok
+2026-10-02T16:42:52.5361003Z 
+2026-10-02T16:42:52.5361164Z ----------------------------------------------------------------------
+2026-10-02T16:42:52.5361544Z Ran 23 tests in 10.885s
+2026-10-02T16:42:52.5361835Z 
+2026-10-02T16:42:52.5361947Z OK
+2026-10-02T16:42:54.6461957Z late UNRESOLVED ['CGROUP_DEADLINE_UNOBSERVED']
+2026-10-02T16:42:56.7236709Z killed FAIL ['CLEANUP_INCOMPLETE']
+2026-10-02T16:42:58.7969999Z truncated FAIL ['CLEANUP_INCOMPLETE']
+2026-10-02T16:43:02.3685091Z receipt-late FAIL ['SIGNAL_NOT_RECEIVED']
+2026-10-02T16:43:05.9399252Z receipt-timely PASS []
+2026-10-02T16:43:09.5153636Z receipt-disabled PASS []
+2026-10-02T16:43:09.5645872Z common-ancestor-denied uid=65534 INFRASTRUCTURE_ERROR
+2026-10-02T16:43:10.7750125Z delegated-success uid=65534 PASS
+2026-10-02T16:43:13.4778743Z pnpm-12.6.0-arm64 12.6.0 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN']
+2026-10-02T16:43:15.8985204Z pnpm-12.7.0-arm64 12.7.0 PASS []
+2026-10-02T16:43:18.2564861Z uv-0.5.1-arm64 uv 0.5.1 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN', 'SIGNAL_NOT_RECEIVED', 'CLEANUP_INCOMPLETE']
+2026-10-02T16:43:20.5282417Z uv-0.5.2-arm64 uv 0.5.2 PASS []
+2026-10-02T16:43:20.7316160Z ##[group]Run docker run --rm -v "$PWD:/work" -w /work rust:1.85.0 cargo check --locked
+2026-10-02T16:43:20.7316947Z [36;1mdocker run --rm -v "$PWD:/work" -w /work rust:1.85.0 cargo check --locked[0m
+2026-10-02T16:43:20.7369457Z shell: /usr/bin/bash -e {0}
+2026-10-02T16:43:20.7369750Z ##[endgroup]
+2026-10-02T16:43:20.7539372Z Unable to find image 'rust:1.85.0' locally
+2026-10-02T16:43:21.1223704Z 1.85.0: Pulling from library/rust
+2026-10-02T16:43:21.2491136Z 545aa82ec479: Pulling fs layer
+2026-10-02T16:43:21.2491777Z 4378a6c11dea: Pulling fs layer
+2026-10-02T16:43:21.2492063Z 140d15be2fea: Pulling fs layer
+2026-10-02T16:43:21.2492386Z 1d9d474cce08: Pulling fs layer
+2026-10-02T16:43:21.2492708Z 36be92cf48bf: Pulling fs layer
+2026-10-02T16:43:21.2492966Z 1d9d474cce08: Waiting
+2026-10-02T16:43:21.2493228Z 36be92cf48bf: Waiting
+2026-10-02T16:43:21.6324770Z 4378a6c11dea: Verifying Checksum
+2026-10-02T16:43:21.6325164Z 4378a6c11dea: Download complete
+2026-10-02T16:43:21.6974450Z 545aa82ec479: Download complete
+2026-10-02T16:43:21.8797770Z 140d15be2fea: Verifying Checksum
+2026-10-02T16:43:21.8799006Z 140d15be2fea: Download complete
+2026-10-02T16:43:22.6435543Z 1d9d474cce08: Verifying Checksum
+2026-10-02T16:43:22.6444671Z 1d9d474cce08: Download complete
+2026-10-02T16:43:22.9539904Z 36be92cf48bf: Verifying Checksum
+2026-10-02T16:43:22.9541356Z 36be92cf48bf: Download complete
+2026-10-02T16:43:23.3359401Z 545aa82ec479: Pull complete
+2026-10-02T16:43:26.1378525Z 4378a6c11dea: Pull complete
+2026-10-02T16:43:28.5609430Z 140d15be2fea: Pull complete
+2026-10-02T16:43:34.5408174Z 1d9d474cce08: Pull complete
+2026-10-02T16:43:38.4850839Z 36be92cf48bf: Pull complete
+2026-10-02T16:43:39.2458801Z Digest: sha256:0ff31c9ffa641a62e48d543fb00b4960955ea375f40776f40f585b89e654cc5e
+2026-10-02T16:43:39.2473009Z Status: Downloaded newer image for rust:1.85.0
+2026-10-02T16:43:39.3724476Z     Updating crates.io index
+2026-10-02T16:43:39.4775822Z  Downloading crates ...
+2026-10-02T16:43:39.5275399Z   Downloaded autocfg v1.5.1
+2026-10-02T16:43:39.5309349Z   Downloaded anstyle-query v1.1.5
+2026-10-02T16:43:39.5323439Z   Downloaded cfg_aliases v0.2.2
+2026-10-02T16:43:39.5332367Z   Downloaded cfg-if v1.0.5
+2026-10-02T16:43:39.5347396Z   Downloaded serde_derive v1.0.229
+2026-10-02T16:43:39.5377757Z   Downloaded bitflags v2.13.2
+2026-10-02T16:43:39.5415696Z   Downloaded utf8parse v0.2.2
+2026-10-02T16:43:39.5425194Z   Downloaded memoffset v0.9.1
+2026-10-02T16:43:39.5439617Z   Downloaded zmij v1.0.23
+2026-10-02T16:43:39.5454344Z   Downloaded heck v0.5.0
+2026-10-02T16:43:39.5466496Z   Downloaded unicode-ident v1.0.26
+2026-10-02T16:43:39.5494484Z   Downloaded anstyle-parse v1.0.0
+2026-10-02T16:43:39.5512314Z   Downloaded serde_core v1.0.229
+2026-10-02T16:43:39.5540610Z   Downloaded strsim v0.11.1
+2026-10-02T16:43:39.5555488Z   Downloaded clap v4.6.7
+2026-10-02T16:43:39.5630980Z   Downloaded serde v1.0.229
+2026-10-02T16:43:39.5665350Z   Downloaded syn v3.0.6
+2026-10-02T16:43:39.5766269Z   Downloaded serde_json v1.0.151
+2026-10-02T16:43:39.5828827Z   Downloaded clap_builder v4.6.7
+2026-10-02T16:43:39.5889371Z   Downloaded quote v1.0.47
+2026-10-02T16:43:39.5911736Z   Downloaded memchr v2.8.3
+2026-10-02T16:43:39.5957781Z   Downloaded proc-macro2 v1.0.107
+2026-10-02T16:43:39.5984079Z   Downloaded clap_derive v4.6.7
+2026-10-02T16:43:39.6004858Z   Downloaded anstyle v1.0.14
+2026-10-02T16:43:39.6018347Z   Downloaded anstream v1.0.0
+2026-10-02T16:43:39.6038864Z   Downloaded clap_lex v1.1.1
+2026-10-02T16:43:39.6050114Z   Downloaded itoa v1.0.18
+2026-10-02T16:43:39.6063078Z   Downloaded is_terminal_polyfill v1.70.2
+2026-10-02T16:43:39.6071442Z   Downloaded nix v0.31.3
+2026-10-02T16:43:39.6175249Z   Downloaded colorchoice v1.0.5
+2026-10-02T16:43:39.6184163Z   Downloaded libc v0.2.189
+2026-10-02T16:43:39.6740560Z    Compiling proc-macro2 v1.0.107
+2026-10-02T16:43:39.6741122Z    Compiling unicode-ident v1.0.26
+2026-10-02T16:43:39.6741406Z    Compiling quote v1.0.47
+2026-10-02T16:43:39.6741680Z    Compiling serde_core v1.0.229
+2026-10-02T16:43:39.7407111Z     Checking utf8parse v0.2.2
+2026-10-02T16:43:39.7976316Z    Compiling autocfg v1.5.1
+2026-10-02T16:43:39.8938442Z     Checking anstyle-parse v1.0.0
+2026-10-02T16:43:39.9315222Z     Checking anstyle v1.0.14
+2026-10-02T16:43:40.0098030Z    Compiling libc v0.2.189
+2026-10-02T16:43:40.0755922Z     Checking colorchoice v1.0.5
+2026-10-02T16:43:40.1130445Z    Compiling cfg_aliases v0.2.2
+2026-10-02T16:43:40.1400731Z    Compiling zmij v1.0.23
+2026-10-02T16:43:40.2212479Z    Compiling memoffset v0.9.1
+2026-10-02T16:43:40.3327037Z     Checking anstyle-query v1.1.5
+2026-10-02T16:43:40.3597757Z     Checking is_terminal_polyfill v1.70.2
+2026-10-02T16:43:40.3927802Z     Checking anstream v1.0.0
+2026-10-02T16:43:40.3952526Z    Compiling nix v0.31.3
+2026-10-02T16:43:40.7168191Z    Compiling serde_json v1.0.151
+2026-10-02T16:43:40.7337089Z     Checking clap_lex v1.1.1
+2026-10-02T16:43:40.8217788Z    Compiling syn v3.0.6
+2026-10-02T16:43:40.8419821Z     Checking strsim v0.11.1
+2026-10-02T16:43:40.8455085Z    Compiling serde v1.0.229
+2026-10-02T16:43:40.9619982Z    Compiling heck v0.5.0
+2026-10-02T16:43:41.0797495Z     Checking clap_builder v4.6.7
+2026-10-02T16:43:42.8661506Z     Checking cfg-if v1.0.5
+2026-10-02T16:43:42.8907814Z     Checking bitflags v2.13.2
+2026-10-02T16:43:42.9288717Z     Checking memchr v2.8.3
+2026-10-02T16:43:42.9855183Z     Checking itoa v1.0.18
+2026-10-02T16:43:44.4955563Z    Compiling serde_derive v1.0.229
+2026-10-02T16:43:44.4955942Z    Compiling clap_derive v4.6.7
+2026-10-02T16:43:46.0726283Z     Checking clap v4.6.7
+2026-10-02T16:43:47.4497644Z     Checking exitscope v0.1.1 (/work)
+2026-10-02T16:43:47.9561469Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.61s
+2026-10-02T16:43:48.5223268Z ##[group]Run actions/upload-artifact@v7.0.1
+2026-10-02T16:43:48.5223673Z with:
+2026-10-02T16:43:48.5224017Z   name: all-validation-outcomes-arm64
+2026-10-02T16:43:48.5224369Z   path: validation/ci/arm64/
+2026-10-02T16:43:48.5224660Z   if-no-files-found: warn
+2026-10-02T16:43:48.5224922Z   compression-level: 6
+2026-10-02T16:43:48.5225390Z   overwrite: false
+2026-10-02T16:43:48.5225663Z   include-hidden-files: false
+2026-10-02T16:43:48.5225944Z   archive: true
+2026-10-02T16:43:48.5226165Z ##[endgroup]
+2026-10-02T16:43:48.6552308Z With the provided path, there will be 73 files uploaded
+2026-10-02T16:43:48.6557327Z Artifact name is valid!
+2026-10-02T16:43:48.6557817Z Root directory input is valid!
+2026-10-02T16:43:48.8900888Z Uploading artifact: all-validation-outcomes-arm64.zip
+2026-10-02T16:43:48.8936086Z Beginning upload of artifact content to blob storage
+2026-10-02T16:43:49.1129413Z Uploaded bytes 49355
+2026-10-02T16:43:49.1424747Z Finished uploading artifact content to blob storage!
+2026-10-02T16:43:49.1425490Z SHA256 digest of uploaded artifact is 9f796585c3280653f812cf51ae977febeab2a0c4b56bd59188d804788978724a
+2026-10-02T16:43:49.1426071Z Finalizing artifact upload
+2026-10-02T16:43:49.4537298Z Artifact all-validation-outcomes-arm64 successfully finalized. Artifact ID 11239612336
+2026-10-02T16:43:49.4538305Z Artifact all-validation-outcomes-arm64 has been successfully uploaded! Final size is 49355 bytes. Artifact ID is 11239612336
+2026-10-02T16:43:49.4541982Z Artifact download URL: https://github.com/0then0/exitscope/actions/runs/37035683117/artifacts/11239612336
+2026-10-02T16:43:49.4763781Z Post job cleanup.
+2026-10-02T16:43:49.5455538Z [command]/usr/bin/git version
+2026-10-02T16:43:49.5494148Z git version 2.55.0
+2026-10-02T16:43:49.5527932Z Temporarily overriding HOME='/home/runner/work/_temp/7bf49346-72f7-442f-8313-74b187e9e2b5' before making global git config changes
+2026-10-02T16:43:49.5530734Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T16:43:49.5541428Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/exitscope/exitscope
+2026-10-02T16:43:49.5574590Z Removing SSH command configuration
+2026-10-02T16:43:49.5582061Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T16:43:49.5618521Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T16:43:49.5826968Z Removing HTTP extra header
+2026-10-02T16:43:49.5832596Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T16:43:49.5867964Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T16:43:49.6079860Z Removing includeIf entries pointing to credentials config files
+2026-10-02T16:43:49.6090083Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T16:43:49.6113235Z includeif.gitdir:/home/runner/work/exitscope/exitscope/.git.path
+2026-10-02T16:43:49.6114298Z includeif.gitdir:/home/runner/work/exitscope/exitscope/.git/worktrees/*.path
+2026-10-02T16:43:49.6115041Z includeif.gitdir:/github/workspace/.git.path
+2026-10-02T16:43:49.6115436Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-02T16:43:49.6122826Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/exitscope/exitscope/.git.path
+2026-10-02T16:43:49.6147521Z /home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:43:49.6158381Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/exitscope/exitscope/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-b1a4cf6d\-b8ea\-4772\-a40f\-96b16a735cfc\.config
+2026-10-02T16:43:49.6196661Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/exitscope/exitscope/.git/worktrees/*.path
+2026-10-02T16:43:49.6224230Z /home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:43:49.6232108Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/exitscope/exitscope/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-b1a4cf6d\-b8ea\-4772\-a40f\-96b16a735cfc\.config
+2026-10-02T16:43:49.6269422Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-02T16:43:49.6304649Z /github/runner_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:43:49.6310985Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-b1a4cf6d\-b8ea\-4772\-a40f\-96b16a735cfc\.config
+2026-10-02T16:43:49.6346607Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-02T16:43:49.6371621Z /github/runner_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config
+2026-10-02T16:43:49.6378534Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-b1a4cf6d\-b8ea\-4772\-a40f\-96b16a735cfc\.config
+2026-10-02T16:43:49.6414536Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T16:43:49.6614915Z Removing credentials config '/home/runner/work/_temp/git-credentials-b1a4cf6d-b8ea-4772-a40f-96b16a735cfc.config'
+2026-10-02T16:43:49.6761200Z Cleaning up orphan processes
+

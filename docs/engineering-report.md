@@ -44,8 +44,20 @@ These use fake manager clients and are not actual systemd execution evidence.
 Hosted x86_64 additionally runs `python3 tests/systemd_timeout.py --manager-probe
 "$reports/timeout-probe"`: a real short-lived service exceeds RuntimeMaxSec,
 must fail without reaching the outer client timeout, and its unit/cgroup must
-be removed. The subsequent normal validation must still pass. Hosted results
-for this follow-up are recorded separately when available.
+be removed. The subsequent normal validation must still pass.
+
+[Hosted run 37035683117](https://github.com/0then0/exitscope/actions/runs/37035683117)
+on commit `0ca099a34431a4cc436e4232bdcf93f6f6544407` passed both native architecture
+jobs, including all existing suites, four timeout regressions on each architecture,
+and the four expected pinned external outcomes on each architecture. Its x86_64
+step passed the actual RuntimeMaxSec control and then the normal ordinary-user
+systemd validation: correct PASS, broken FAIL, six observer regressions and all
+eight run cgroups/private IPC directories removed. Both artifact uploads succeeded.
+[Decoded job logs and artifact identities/digests](../validation/v0.1.1/hosted/37035683117/)
+are retained; raw probe diagnostics and execution/cleanup statuses are in the
+uploaded x86_64 artifact. R-02 is fixed with local and actual hosted execution
+evidence. The earlier unfinished run is retained as an unsuccessful attempt;
+its precise blocking cause is still unknown.
 
 ### Native Linux execution and external results
 
