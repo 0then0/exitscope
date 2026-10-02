@@ -2,6 +2,7 @@
 # Run as an ordinary user inside an explicitly delegated systemd service shell.
 # The caller starts the user manager; this script never elevates privileges.
 set -eu
+cd "$(dirname "$0")/.."
 test "$(id -u)" -ne 0
 binary="$1"
 reports="$2"
