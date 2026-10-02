@@ -250,6 +250,11 @@ specific artifacts even on failure, and checks Rust's minimum version. Formattin
 clippy and minimum Rust checks run once; build, unit, integration, observer,
 delegation and all four pinned external cases run on each architecture.
 
+Generated batch output is ignored by Git. The tracked manifest, selected deadline
+reports and permanent historical evidence archive are described in
+[validation/README.md](validation/README.md). Full CI reports are uploaded as
+artifacts; they are not required to build or run ExitScope.
+
 Local v0.1.1 evidence uses Debian 13 containers on Docker Desktop's Linux
 7.0.14-linuxkit: ARM64 execution is native and x86_64 execution uses emulation
 on the ARM64 development host, where `pidfd_open` returns ENOSYS and blocks runtime

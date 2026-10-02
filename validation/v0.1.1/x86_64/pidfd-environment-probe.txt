@@ -1,6 +1,0 @@
-machine=x86_64
-pidfd_open(self)=Traceback (most recent call last):
-  File "<string>", line 1, in <module>
-    import os, platform; print("machine=" + platform.machine()); print("pidfd_open(self)=", end="", flush=True); print(os.pidfd_open(os.getpid()))
-                                                                                                                       ~~~~~~~~~~~~~^^^^^^^^^^^^^
-OSError: [Errno 38] Function not implemented

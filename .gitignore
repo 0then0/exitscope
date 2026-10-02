@@ -22,3 +22,10 @@ target
 
 # Python validation scripts
 __pycache__/
+
+# Validation inputs and curated evidence are tracked; batch output is not.
+/validation/*
+!/validation/README.md
+!/validation/upstream-sources.json
+!/validation/upstream-evidence.json
+!/validation/examples/

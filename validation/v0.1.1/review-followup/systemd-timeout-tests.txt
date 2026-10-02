@@ -1,9 +1,0 @@
-test_failure_preserves_status_and_diagnostics_and_stops_unit (__main__.SystemdTimeout.test_failure_preserves_status_and_diagnostics_and_stops_unit) ... ok
-test_hung_client_is_killed_and_unit_stopped (__main__.SystemdTimeout.test_hung_client_is_killed_and_unit_stopped) ... ok
-test_hung_stop_is_bounded_and_cannot_turn_into_success (__main__.SystemdTimeout.test_hung_stop_is_bounded_and_cannot_turn_into_success) ... ok
-test_successful_collected_unit_is_not_stopped_again (__main__.SystemdTimeout.test_successful_collected_unit_is_not_stopped_again) ... ok
-
-----------------------------------------------------------------------
-Ran 4 tests in 5.918s
-
-OK

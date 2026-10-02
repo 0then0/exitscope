@@ -3,6 +3,11 @@
 Date: 2026-10-02. All runtime results below are **our own Linux executions**,
 unless explicitly labelled upstream evidence or engineering inference.
 
+Evidence storage: generated batch logs are excluded from the current source tree.
+All historical runs, including failed attempts, are retained in the pinned public
+snapshot linked below. [Validation inputs and selected reports](../validation/README.md)
+describe the archive and provenance; runtime behavior and recorded results are unchanged.
+
 ## Hosted acceptance and review follow-up, 2026-10-02
 
 **v0.1.1 acceptance is complete: ready for release and maintenance.** The initial
@@ -16,7 +21,7 @@ The recipe and actual validation script now discard that output. The new
 `tests/documentation.py` executes both diagnostic blocks with a fake manager and
 a dummy secret, confirms the probe runs, and checks artifacts/stdout/stderr contain
 no secret. It passed locally and in CI; the old recipe reproducibly fails this
-regression. [Positive and negative evidence](../validation/v0.1.1/review-followup/)
+regression. [Positive and negative evidence](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/review-followup/)
 is retained. This controlled test is separate from actual systemd execution.
 
 ### CI timeout follow-up (R-02)
@@ -53,7 +58,7 @@ and the four expected pinned external outcomes on each architecture. Its x86_64
 step passed the actual RuntimeMaxSec control and then the normal ordinary-user
 systemd validation: correct PASS, broken FAIL, six observer regressions and all
 eight run cgroups/private IPC directories removed. Both artifact uploads succeeded.
-[Decoded job logs and artifact identities/digests](../validation/v0.1.1/hosted/37035683117/)
+[Decoded job logs and artifact identities/digests](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37035683117/)
 are retained; raw probe diagnostics and execution/cleanup statuses are in the
 uploaded x86_64 artifact. R-02 is fixed with local and actual hosted execution
 evidence. The earlier unfinished run is retained as an unsuccessful attempt;
@@ -81,10 +86,10 @@ Formatting, clippy and Rust 1.85.0 `cargo check --locked` passed once in the ARM
 job. The hosted jobs ran `scripts/linux-checks.sh`, `tests/delegation.py` and
 `scripts/external.py` with per-architecture report paths; exact expanded commands
 and execution output are retained in the
-[ARM64 job log](../validation/v0.1.1/hosted/37025805580/arm64-job.txt) and
-[x86_64 job log](../validation/v0.1.1/hosted/37025805580/x86_64-job.txt).
+[ARM64 job log](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37025805580/arm64-job.txt) and
+[x86_64 job log](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37025805580/x86_64-job.txt).
 Both architecture artifacts uploaded successfully, including all target outcomes;
-[artifact identities, SHA256 and download endpoints](../validation/v0.1.1/hosted/37025805580/artifacts.json)
+[artifact identities, SHA256 and download endpoints](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37025805580/artifacts.json)
 are preserved. Raw JSON reports remain in those GitHub artifacts. Copying the
 connector's temporary artifact URLs into the local workspace returned HTTP 403;
 the complete decoded job logs were retained locally instead. This transport
@@ -142,11 +147,11 @@ recursively chowns a hierarchy, or installs a service.
 The first native hosted batch,
 [37024615472](https://github.com/0then0/exitscope/actions/runs/37024615472), already
 passed both architectures and external cases; its logs remain under
-[hosted/37024615472](../validation/v0.1.1/hosted/37024615472/).
+[hosted/37024615472](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37024615472/).
 Systemd setup was then added. Two unsuccessful validation attempts are retained:
-[37025136734](../validation/v0.1.1/hosted/37025136734/x86_64-job.txt) could not create
+[37025136734](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37025136734/x86_64-job.txt) could not create
 its reports within a Docker-root-owned directory; host-side directory creation
-fixed that without permission weakening. [37025608115](../validation/v0.1.1/hosted/37025608115/x86_64-job.txt)
+fixed that without permission weakening. [37025608115](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/hosted/37025608115/x86_64-job.txt)
 started a valid delegated ordinary-user service but its default home working
 directory hid repository tests; the script now explicitly enters the repository.
 Neither attempt was a target forwarding result; expected target outcomes were
@@ -167,14 +172,14 @@ passed. Native x86_64 execution, all four expected x86_64 external outcomes, and
 the real systemd user-manager recipe remain open. Hosted CI was configured but
 not executed. Everything after this section is retained historical v0.1.0 evidence,
 including unsuccessful attempts; the current evidence is under
-[validation/v0.1.1](../validation/v0.1.1/).
+[validation/v0.1.1](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/).
 
 ### Confirmed defect and verdict change
 
 The hypothesis was confirmed both in source and by running the pre-change engine
 with the new controlled regression. It accepted SIGTERM without checking its
 receipt timestamp while collecting evidence until `max(shutdown_ms, output_ms)`.
-The [baseline report](../validation/v0.1.1/arm64/baseline/receipt-late.json) records
+The [baseline report](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/arm64/baseline/receipt-late.json) records
 impact 62 ms, root exit 67 ms, shutdown deadline 562 ms, snapshot 564 ms, receipt
 1372 ms, stream EOF 1379 ms, and **PASS with no findings**. The worker deliberately
 waited after receiving SIGTERM before reporting it. This demonstrates late
@@ -237,17 +242,17 @@ this is Linux container validation, not macOS runtime support. Results:
   Broken reports remain FAIL after successful forced cleanup. All expected outcomes
   matched, including exit-code mapping and resource-removal checks.
 
-[ARM64 check output](../validation/v0.1.1/arm64/checks.txt),
-[observer final output](../validation/v0.1.1/arm64/observer-final.txt),
-[delegation/external output](../validation/v0.1.1/arm64/external-checks.txt) and
-[MSRV output](../validation/v0.1.1/arm64/msrv.txt) are preserved with all JSON reports.
+[ARM64 check output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/arm64/checks.txt),
+[observer final output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/arm64/observer-final.txt),
+[delegation/external output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/arm64/external-checks.txt) and
+[MSRV output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/arm64/msrv.txt) are preserved with all JSON reports.
 
 Local x86_64 **emulation**, on the same ARM64 LinuxKit VM: Debian 13.7, Rust 1.99.0.
 Build succeeded and 12 Rust tests passed, including all pure verdict tests.
 The pidfd lifecycle test failed: `pidfd_open` returned **ENOSYS (errno 38)**. Runtime
 attempts fail before impact/readiness for the same missing syscall; this is an
 emulation environment limitation, not evidence of broken forwarding in the targets.
-An [independent Python pidfd probe](../validation/v0.1.1/x86_64/pidfd-environment-probe.txt)
+An [independent Python pidfd probe](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/x86_64/pidfd-environment-probe.txt)
 also returned ENOSYS, without using ExitScope.
 Of 23 integration tests, 2 setup checks passed and 21 failed their expected-outcome
 assertions. Observer stopped at its first pre-readiness infrastructure result;
@@ -255,10 +260,10 @@ delegation stopped before verifying the expected migration-denied diagnostic.
 All four upstream binaries executed `--version` successfully, but ExitScope returned
 **INFRASTRUCTURE_ERROR for pnpm 12.6.0/12.7.0 and uv 0.5.1/0.5.2** in both discovery
 and subsequent hash-verifying runs. No expectations or engine syscall protections
-were weakened. [Build/unit output](../validation/v0.1.1/x86_64/checks.txt),
-[runtime attempt](../validation/v0.1.1/x86_64/runtime-attempt.txt),
-[discovery](../validation/v0.1.1/x86_64/external-discovery.txt) and
-[normal pin verification](../validation/v0.1.1/x86_64/external-verified.txt) retain
+were weakened. [Build/unit output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/x86_64/checks.txt),
+[runtime attempt](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/x86_64/runtime-attempt.txt),
+[discovery](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/x86_64/external-discovery.txt) and
+[normal pin verification](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/x86_64/external-verified.txt) retain
 these failures and reports. This does **not** satisfy x86_64 Linux compatibility.
 
 Post-run inspections in each container found no run cgroup directories, target
@@ -270,7 +275,7 @@ hosted runners; no hosted success or minimum-kernel success is claimed.
 
 ### Commands actually executed
 
-The execution inventory is [commands.txt](../validation/v0.1.1/commands.txt).
+The execution inventory is [commands.txt](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/commands.txt).
 Each architecture used a separate disposable container, avoiding shared build
 outputs, with this explicit setup (ARM64 shown; x86_64 used `linux/amd64` and its
 own container name). No host cgroup hierarchy was bind-mounted:
@@ -310,7 +315,7 @@ scripts/linux-checks.sh` passed. These executions install no project dependencie
 No suitable Linux host or disposable VM with a running systemd user manager was
 available. The host is macOS, available Linux containers have `docker-init` PID 1,
 `systemd` and `systemctl` are absent, and no Lima, Multipass, QEMU or libvirt VM
-command was available. [Environment probes](../validation/v0.1.1/systemd-environment-probe.txt)
+command was available. [Environment probes](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/v0.1.1/systemd-environment-probe.txt)
 record exact commands and statuses. No systemd version or systemd execution result
 can be reported. This acceptance criterion is **unfulfilled**. The privileged
 UID 65534 checks above must not be substituted for it.
@@ -445,7 +450,7 @@ the optional external validation scripts; they install no Python packages.
 See [README](../README.md) for installation, delegation, JSON semantics,
 finding IDs, outcomes and the telemetry protocol. `cargo install --path . --locked
 --root /tmp/exitscope-install` succeeded. The installed optimized binary produced
-[help](../validation/installed-help.txt), a [human PASS report](../validation/installed-human.txt)
+[help](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/installed-help.txt), a [human PASS report](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/installed-human.txt)
 and the final external results below.
 
 ## Feasibility checks and execution environment
@@ -486,8 +491,8 @@ was not executed here and remains dependent on local service-manager policy.
   the installed release binary.
 - `cargo install --path . --locked --root /tmp/exitscope-install`: passed.
 
-[Tool output](../validation/checks.txt) and
-[final integration reports](../validation/synthetic/1790931514630446055/) are
+[Tool output](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/checks.txt) and
+[final integration reports](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/synthetic/1790931514630446055/) are
 preserved. The suite covers forwarding and cleanup, missing forwarding, premature
 worker exit, premature root exit, other-group/session survivors, open pipes after
 root exit, survivors with closed pipes, readiness failure, missing telemetry,
@@ -544,7 +549,7 @@ API ancestry evidence; each external run also has source metadata and observed
 ## Our external outcomes
 
 The final installed-binary batch is
-[validation/external/1790931571146498886](../validation/external/1790931571146498886/).
+[validation/external/1790931571146498886](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/external/1790931571146498886/).
 
 - **pnpm 12.6.0, group_sigkill: FAIL.** Root terminated by signal 9. Two live
   members remained in a script group different from root's group, in the same
@@ -569,7 +574,7 @@ pipe failure mechanism; the uv result verifies the narrower parent-only SIGTERM
 forwarding and wait behavior fixed in project/run.rs.
 
 The original **uv 0.3.3 attempt was INFRASTRUCTURE_ERROR**, preserved in
-[its initial report](../validation/external/uv-0.3.3-arm64.json). That release
+[its initial report](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/external/uv-0.3.3-arm64.json). That release
 implicitly tried to build the local dependency-free project using setuptools,
 which was unavailable in the offline cache. It never reached readiness and no
 shutdown impact occurred. Instead of adding package dependencies, the broken
@@ -663,8 +668,8 @@ introduce no runtime dependencies. The new observer suite runs in linux-checks.s
 and therefore in the existing GitHub workflow; hosted Actions was not executed
 locally. Minimum-kernel and x86_64 validation remain unperformed in this batch.
 
-[Exact commands and check results](../validation/review-fixes/checks.txt), and
-[all run outcomes](../validation/review-fixes/) include the unsuccessful first
+[Exact commands and check results](https://github.com/0then0/exitscope/blob/0f700241356d8a8825d0f620fc45793057de02ac/validation/review-fixes/checks.txt), and
+[all run outcomes](https://github.com/0then0/exitscope/tree/0f700241356d8a8825d0f620fc45793057de02ac/validation/review-fixes/) include the unsuccessful first
 observer-test attempt. That attempt resumed after cgroup.procs emptied but before
 cgroup.events populated became zero; its FAIL was retained, and the test now waits
 for the latter condition explicitly. No engine behavior was weakened to satisfy

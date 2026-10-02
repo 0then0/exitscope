@@ -1,4 +1,0 @@
-exitscope-v011-arm64
-exitscope-v011-x64
-exitscope-v011-x64
-exitscope-v011-arm64
