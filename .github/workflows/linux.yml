@@ -24,6 +24,8 @@ jobs:
         # Privilege is explicit and confined to a disposable CI container.
         # The host cgroup hierarchy is never bind-mounted into the container.
         run: |
+          # Keep the report parent writable by the ordinary host runner too.
+          mkdir -p "validation/ci/${{ matrix.arch }}"
           docker run --rm --init --privileged --cgroupns=private \
             --platform ${{ matrix.platform }} \
             -v "$PWD:/work" -w /work \
@@ -32,6 +34,7 @@ jobs:
               reports=validation/ci/${{ matrix.arch }}
               mkdir -p "$reports"
               { cat /etc/os-release; uname -a; rustc --version; } > "$reports/environment.txt"
+              cat "$reports/environment.txt"
               if [ "${{ matrix.arch }}" = arm64 ]; then
                 rustup component add rustfmt clippy
                 cargo fmt --check

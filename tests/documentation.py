@@ -11,9 +11,13 @@ from pathlib import Path
 class Documentation(unittest.TestCase):
     def test_systemd_diagnostics_do_not_save_manager_environment(self):
         repo = Path(__file__).resolve().parents[1]
-        report = (repo / "docs/engineering-report.md").read_text()
+        for source in ["docs/engineering-report.md", "scripts/systemd-checks.sh"]:
+            with self.subTest(source=source):
+                self.check_diagnostics((repo / source).read_text())
+
+    def check_diagnostics(self, report):
         match = re.search(
-            r'^\{ cat /etc/os-release;.*?^\} > "\$reports/environment.txt"',
+            r'^\{\s+cat /etc/os-release.*?^\} > "\$reports/environment.txt"',
             report,
             flags=re.MULTILINE | re.DOTALL,
         )

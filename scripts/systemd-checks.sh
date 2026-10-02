@@ -19,6 +19,7 @@ mkdir -p "$reports"
   stat -f -c %T "$parent"
   ls -ld "$parent" "$parent/cgroup.procs"
 } > "$reports/environment.txt"
+cat "$reports/environment.txt"
 status=0
 python3 - --binary "$binary" --cgroup-parent "$parent/runs" \
   --reports "$reports/integration" <<'PY' || status=1
