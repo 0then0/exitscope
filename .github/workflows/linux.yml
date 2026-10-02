@@ -58,6 +58,7 @@ jobs:
         run: docker run --rm -v "$PWD:/work" -w /work rust:1.85.0 cargo check --locked
       - name: Explicit systemd user-manager setup and delegation validation
         if: ${{ always() && matrix.arch == 'x86_64' }}
+        timeout-minutes: 10
         # This is explicit setup on a disposable hosted VM, outside Docker.
         # The engine neither starts a manager nor changes cgroup permissions.
         run: |
@@ -68,14 +69,15 @@ jobs:
           export XDG_RUNTIME_DIR="/run/user/$(id -u)"
           export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
           {
-            printf '%s\n' "sudo systemctl start user@$(id -u).service"
-            printf '%s\n' "cargo build --locked --target-dir /tmp/exitscope-systemd-target"
-            printf '%s\n' "systemd-run --user --pty --collect --property=Delegate=yes bash $PWD/scripts/systemd-checks.sh /tmp/exitscope-systemd-target/debug/exitscope $reports"
+            printf '%s\n' "timeout --kill-after=5s 45s sudo systemctl start user@$(id -u).service"
+            printf '%s\n' "timeout --kill-after=5s 300s cargo build --locked --target-dir /tmp/exitscope-systemd-target"
+            printf '%s\n' "sh $PWD/scripts/systemd-run-checks.sh /tmp/exitscope-systemd-target/debug/exitscope $reports"
           } > "$reports/commands.txt"
-          sudo systemctl start "user@$(id -u).service"
-          cargo build --locked --target-dir /tmp/exitscope-systemd-target
+          timeout --kill-after=5s 45s sudo systemctl start "user@$(id -u).service"
+          timeout --kill-after=5s 300s cargo build --locked --target-dir /tmp/exitscope-systemd-target
+          python3 tests/systemd_timeout.py --manager-probe "$reports/timeout-probe"
           # Allocate the terminal required by the README recipe in a CI shell.
-          script -q -e -c "systemd-run --user --pty --collect --property=Delegate=yes bash '$PWD/scripts/systemd-checks.sh' '/tmp/exitscope-systemd-target/debug/exitscope' '$reports'" /dev/null
+          sh scripts/systemd-run-checks.sh /tmp/exitscope-systemd-target/debug/exitscope "$reports"
       - uses: actions/upload-artifact@v7.0.1
         if: always()
         with:

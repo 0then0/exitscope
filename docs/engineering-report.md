@@ -19,6 +19,34 @@ no secret. It passed locally and in CI; the old recipe reproducibly fails this
 regression. [Positive and negative evidence](../validation/v0.1.1/review-followup/)
 is retained. This controlled test is separate from actual systemd execution.
 
+### CI timeout follow-up (R-02)
+
+Run [37028117489](https://github.com/0then0/exitscope/actions/runs/37028117489)
+passed ARM64, but its repeated x86_64 systemd step remained in progress for over
+50 minutes. Its live job logs were unavailable through the connector, so the
+blocked command and cause were not established. This does not supersede the
+completed native/systemd evidence below; the repeated run is not a success.
+
+The systemd CI step now has a 10-minute limit; manager setup and native build
+are separately bounded to 45 and 300 seconds (5-second kill grace). The new
+`scripts/systemd-run-checks.sh` limits the PTY client to 180 seconds (5-second
+kill grace), assigns an explicit run-specific unit, and gives the service
+`RuntimeMaxSec=120s` / `TimeoutStopSec=5s`. An exit handler checks and stops any
+remaining unit with a 10-second client limit and 2-second kill grace. Client and
+cleanup statuses and diagnostics are retained before returning failure; the
+existing subsequent `always()` artifact upload remains in place. No target
+verdict or production engine behavior changes.
+
+`docker run --rm --init -v "$PWD:/work:ro" -w /work rust:1.99.0 python3 tests/systemd_timeout.py`
+passed four controlled regressions using actual GNU timeout: successful collected
+unit, failed validation, a hung client ignoring SIGTERM, and hung unit stop.
+These use fake manager clients and are not actual systemd execution evidence.
+Hosted x86_64 additionally runs `python3 tests/systemd_timeout.py --manager-probe
+"$reports/timeout-probe"`: a real short-lived service exceeds RuntimeMaxSec,
+must fail without reaching the outer client timeout, and its unit/cgroup must
+be removed. The subsequent normal validation must still pass. Hosted results
+for this follow-up are recorded separately when available.
+
 ### Native Linux execution and external results
 
 [Hosted run 37025805580](https://github.com/0then0/exitscope/actions/runs/37025805580),

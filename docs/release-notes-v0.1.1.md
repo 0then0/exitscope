@@ -14,6 +14,9 @@ Release preparation, 2026-10-02. **Acceptance verified; ready for release and ma
 - CI is configured for native ARM64 and x86_64 execution of build, unit, integration,
   observer, delegation and four external cases. Style and Rust 1.85 checks run once.
   Architecture specific artifacts are uploaded even after failures.
+- Systemd CI setup, build, client execution and unit stop have explicit time
+  limits. A transient service runtime limit remains effective after client loss;
+  timeout regressions retain diagnostics and propagate failures.
 - x86_64 upstream archives were added through the existing maintainer discovery
   workflow with exact URLs, commits and SHA256. Normal runs verified these pins.
 

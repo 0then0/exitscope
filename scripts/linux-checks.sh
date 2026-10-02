@@ -8,6 +8,7 @@ if [ "${EXITSCOPE_CHECK_STYLE:-1}" = 1 ]; then
 fi
 status=0
 python3 tests/documentation.py || status=1
+python3 tests/systemd_timeout.py || status=1
 cargo test --locked || status=1
 cargo build --locked
 binary="${CARGO_TARGET_DIR:-target}/debug/exitscope"
