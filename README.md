@@ -1,4 +1,13 @@
+<p align="center">
+  <img src="assets/exitscope.svg" width="128" height="128" alt="ExitScope: root exit, a surviving subprocess, and an open output pipe">
+</p>
+
 # ExitScope
+
+[![Linux checks](https://img.shields.io/github/actions/workflow/status/0then0/exitscope/linux.yml?branch=main&label=Linux%20checks)](https://github.com/0then0/exitscope/actions/workflows/linux.yml)
+[![License: Apache-2.0](https://img.shields.io/github/license/0then0/exitscope)](LICENSE)
+[![Rust: 1.85+](https://img.shields.io/badge/Rust-1.85%2B-555555?logo=rust)](#requirements-and-installation)
+[![Linux: 5.14+](https://img.shields.io/badge/Linux-5.14%2B-555555?logo=linux)](#requirements-and-installation)
 
 Run a command, exercise its shutdown contract, and detect unfinished cleanup,
 surviving subprocesses, and output pipes that never close.
