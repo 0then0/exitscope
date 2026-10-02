@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "outcome": "INFRASTRUCTURE_ERROR",
+  "config": {
+    "cwd": "/source",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 500,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-fixes/exitscope-942-1790943383948826887",
+  "root": {
+    "pid": 943,
+    "start_ticks": 14681,
+    "ppid": 942,
+    "pgid": 943,
+    "sid": 943,
+    "state": "R"
+  },
+  "root_exit": null,
+  "launch_error": {
+    "stage": "exec",
+    "errno": 2
+  },
+  "cgroup_empty_at_ms": null,
+  "events": [
+    {
+      "at_ms": 10,
+      "pid": 943,
+      "kind": "gated",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": null,
+  "shutdown_snapshot_at_ms": 13,
+  "verdict_at_ms": 13,
+  "observed_outcome": "INFRASTRUCTURE_ERROR",
+  "cleanup_started_at_ms": 13,
+  "cleanup_finished_at_ms": 13,
+  "findings": [
+    {
+      "id": "INFRASTRUCTURE",
+      "detail": "launcher exec failed (errno Some(2))"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

@@ -1,0 +1,106 @@
+    Checking exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.53s
+   Compiling exitscope v0.1.0 (/work)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.17s
+     Running unittests src/main.rs (target/debug/deps/exitscope-fd62caf7cabadec0)
+
+running 6 tests
+test model::tests::verified_contract_passes ... ok
+test model::tests::signal_and_wait_are_required ... ok
+test linux::tests::proc_identity_is_own_process ... ok
+test model::tests::absent_telemetry_is_unresolved ... ok
+test model::tests::cleanup_cannot_erase_violation ... ok
+test linux::tests::pidfd_reports_exit_without_reaping ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.73s
+test_correct_forwarding (__main__.Integration.test_correct_forwarding) ... ok
+test_exec_failure (__main__.Integration.test_exec_failure) ... ok
+test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched) ... ok
+test_group_kill (__main__.Integration.test_group_kill) ... ok
+test_intentional_background_contract (__main__.Integration.test_intentional_background_contract) ... ok
+test_interruption (__main__.Integration.test_interruption) ... ok
+test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass) ... ok
+test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes) ... ok
+test_missing_telemetry (__main__.Integration.test_missing_telemetry) ... ok
+test_no_permissions (__main__.Integration.test_no_permissions) ... ok
+test_not_cgroup (__main__.Integration.test_not_cgroup) ... ok
+test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve) ... ok
+test_premature_worker (__main__.Integration.test_premature_worker) ... ok
+test_readiness_failure (__main__.Integration.test_readiness_failure) ... ok
+test_root_does_not_wait (__main__.Integration.test_root_does_not_wait) ... ok
+test_survivor_other_group (__main__.Integration.test_survivor_other_group) ... ok
+test_survivor_other_session (__main__.Integration.test_survivor_other_session) ... ok
+test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 10.066s
+
+OK
+common-ancestor-denied uid=65534 INFRASTRUCTURE_ERROR
+delegated-success uid=65534 PASS
+pnpm-12.6.0-arm64 12.6.0 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN']
+pnpm-12.7.0-arm64 12.7.0 PASS []
+uv-0.5.1-arm64 uv 0.5.1 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN', 'SIGNAL_NOT_RECEIVED', 'CLEANUP_INCOMPLETE', 'ROOT_DID_NOT_WAIT']
+uv-0.5.2-arm64 uv 0.5.2 PASS []
+    Checking exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.68s
+    Checking exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.39s
+   Compiling exitscope v0.1.0 (/work)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.11s
+     Running unittests src/main.rs (target/debug/deps/exitscope-fd62caf7cabadec0)
+
+running 6 tests
+test model::tests::absent_telemetry_is_unresolved ... ok
+test linux::tests::proc_identity_is_own_process ... ok
+test model::tests::cleanup_cannot_erase_violation ... ok
+test model::tests::verified_contract_passes ... ok
+test model::tests::signal_and_wait_are_required ... ok
+test linux::tests::pidfd_reports_exit_without_reaping ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.01s
+test_correct_forwarding (__main__.Integration.test_correct_forwarding) ... ok
+test_exec_failure (__main__.Integration.test_exec_failure) ... ok
+test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched) ... ok
+test_group_kill (__main__.Integration.test_group_kill) ... ok
+test_intentional_background_contract (__main__.Integration.test_intentional_background_contract) ... ok
+test_interruption (__main__.Integration.test_interruption) ... ok
+test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass) ... ok
+test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes) ... ok
+test_missing_telemetry (__main__.Integration.test_missing_telemetry) ... ok
+test_no_permissions (__main__.Integration.test_no_permissions) ... ok
+test_not_cgroup (__main__.Integration.test_not_cgroup) ... ok
+test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve) ... ok
+test_premature_worker (__main__.Integration.test_premature_worker) ... ok
+test_readiness_failure (__main__.Integration.test_readiness_failure) ... ok
+test_root_does_not_wait (__main__.Integration.test_root_does_not_wait) ... ok
+test_survivor_other_group (__main__.Integration.test_survivor_other_group) ... ok
+test_survivor_other_session (__main__.Integration.test_survivor_other_session) ... ok
+test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof) ... ok
+test_wrong_signal (__main__.Integration.test_wrong_signal) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 10.937s
+
+OK
+  Installing exitscope v0.1.0 (/work)
+    Updating crates.io index
+   Compiling exitscope v0.1.0 (/work)
+    Finished `release` profile [optimized] target(s) in 6.01s
+   Replacing /tmp/exitscope-install/bin/exitscope
+    Replaced package `exitscope v0.1.0 (/work)` with `exitscope v0.1.0 (/work)` (executable `exitscope`)
+warning: be sure to add `/tmp/exitscope-install/bin` to your PATH to be able to run the installed binaries
+pnpm-12.6.0-arm64 12.6.0 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN']
+pnpm-12.7.0-arm64 12.7.0 PASS []
+uv-0.5.1-arm64 uv 0.5.1 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN', 'SIGNAL_NOT_RECEIVED', 'CLEANUP_INCOMPLETE', 'ROOT_DID_NOT_WAIT']
+uv-0.5.2-arm64 uv 0.5.2 PASS []
+common-ancestor-denied uid=65534 INFRASTRUCTURE_ERROR
+delegated-success uid=65534 PASS
+    Checking exitscope v0.1.0 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.81s

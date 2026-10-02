@@ -1,0 +1,15 @@
+{
+  "source": {
+    "runner": "uv",
+    "version": "0.5.1",
+    "tag": "0.5.1",
+    "commit": "f399a52719a032ee41975c3eb3fdd1631b3d10cc",
+    "arch": "arm64",
+    "url": "https://github.com/astral-sh/uv/releases/download/0.5.1/uv-aarch64-unknown-linux-gnu.tar.gz",
+    "sha256": "aab7f31071c548e3ce64de5f622494f8d8679ef838d5b07e53e74399d14ee79f",
+    "expected": "FAIL"
+  },
+  "observed_version": "uv 0.5.1",
+  "outcome": "FAIL",
+  "exit_code": 1
+}

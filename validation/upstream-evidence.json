@@ -1,0 +1,38 @@
+[
+  {
+    "repo": "pnpm/pnpm",
+    "base": "2af480acf4f44a82b223c50f2b36f53879af312a",
+    "head": "v12.6.0",
+    "status": "ahead",
+    "ahead_by": 113,
+    "behind_by": 0,
+    "url": "https://api.github.com/repos/pnpm/pnpm/compare/2af480acf4f44a82b223c50f2b36f53879af312a...v12.6.0"
+  },
+  {
+    "repo": "pnpm/pnpm",
+    "base": "4abfa5a66cd8c0157cfe1344adeb710540f20e17",
+    "head": "v12.7.0",
+    "status": "ahead",
+    "ahead_by": 106,
+    "behind_by": 0,
+    "url": "https://api.github.com/repos/pnpm/pnpm/compare/4abfa5a66cd8c0157cfe1344adeb710540f20e17...v12.7.0"
+  },
+  {
+    "repo": "astral-sh/uv",
+    "base": "0.5.1",
+    "head": "052b4e77a60847de0ccd275f4c7fc241378c9bc0",
+    "status": "ahead",
+    "ahead_by": 37,
+    "behind_by": 0,
+    "url": "https://api.github.com/repos/astral-sh/uv/compare/0.5.1...052b4e77a60847de0ccd275f4c7fc241378c9bc0"
+  },
+  {
+    "repo": "astral-sh/uv",
+    "base": "052b4e77a60847de0ccd275f4c7fc241378c9bc0",
+    "head": "0.5.2",
+    "status": "ahead",
+    "ahead_by": 51,
+    "behind_by": 0,
+    "url": "https://api.github.com/repos/astral-sh/uv/compare/052b4e77a60847de0ccd275f4c7fc241378c9bc0...0.5.2"
+  }
+]

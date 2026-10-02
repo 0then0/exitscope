@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "outcome": "FAIL",
+  "config": {
+    "cwd": "/tmp/exitscope-external-58rdshx4/uv-0.5.1-arm64/project",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 10000,
+    "shutdown_ms": 1500,
+    "output_ms": 1800,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-4910-1790931075292294420",
+  "root": {
+    "pid": 4911,
+    "start_ticks": 442087,
+    "ppid": 4910,
+    "pgid": 4911,
+    "sid": 4911,
+    "state": "R"
+  },
+  "root_exit": {
+    "at_ms": 91,
+    "code": null,
+    "signal": 15
+  },
+  "events": [
+    {
+      "at_ms": 11,
+      "pid": 4911,
+      "kind": "gated"
+    },
+    {
+      "at_ms": 86,
+      "pid": 4924,
+      "kind": "handler_installed"
+    },
+    {
+      "at_ms": 89,
+      "pid": 4924,
+      "kind": "ready"
+    }
+  ],
+  "survivors": [
+    {
+      "pid": 4924,
+      "start_ticks": 442095,
+      "ppid": 1,
+      "pgid": 4911,
+      "sid": 4911,
+      "state": "S"
+    }
+  ],
+  "live_members_present": true,
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 93,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": 89,
+  "shutdown_snapshot_at_ms": 1591,
+  "verdict_at_ms": 1889,
+  "observed_outcome": "FAIL",
+  "cleanup_started_at_ms": 1889,
+  "cleanup_finished_at_ms": 1897,
+  "findings": [
+    {
+      "id": "LIVE_MEMBERS",
+      "detail": "live cgroup members at shutdown deadline"
+    },
+    {
+      "id": "STDOUT_OPEN",
+      "detail": "stdout did not reach EOF before output deadline"
+    },
+    {
+      "id": "STDERR_OPEN",
+      "detail": "stderr did not reach EOF before output deadline"
+    },
+    {
+      "id": "SIGNAL_NOT_RECEIVED",
+      "detail": "instrumented worker did not report SIGTERM"
+    },
+    {
+      "id": "CLEANUP_INCOMPLETE",
+      "detail": "worker did not complete cleanup"
+    },
+    {
+      "id": "ROOT_DID_NOT_WAIT",
+      "detail": "root was already exited before cleanup completion handshake"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

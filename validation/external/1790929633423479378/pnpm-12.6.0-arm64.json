@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "outcome": "FAIL",
+  "config": {
+    "executable": "/tmp/exitscope-external-zokibtmf/pnpm-12.6.0-arm64/pnpm",
+    "args": [
+      "run",
+      "serve"
+    ],
+    "cwd": "/tmp/exitscope-external-zokibtmf/pnpm-12.6.0-arm64/project",
+    "scenario": "group_sigkill",
+    "readiness": "fixture",
+    "readiness_ms": 10000,
+    "shutdown_ms": 1500,
+    "output_ms": 1800,
+    "contract": {
+      "signal_receipt": false,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1897-1790929637067061088",
+  "root": {
+    "pid": 1898,
+    "start_ticks": 298259,
+    "ppid": 1897,
+    "pgid": 1898,
+    "sid": 1898,
+    "state": "R"
+  },
+  "root_exit": {
+    "at_ms": 471,
+    "code": null,
+    "signal": 9
+  },
+  "events": [
+    {
+      "at_ms": 9,
+      "pid": 1898,
+      "kind": "gated"
+    },
+    {
+      "at_ms": 466,
+      "pid": 1963,
+      "kind": "handler_installed"
+    },
+    {
+      "at_ms": 469,
+      "pid": 1963,
+      "kind": "ready"
+    }
+  ],
+  "survivors": [
+    {
+      "pid": 1962,
+      "start_ticks": 298305,
+      "ppid": 1,
+      "pgid": 1962,
+      "sid": 1898,
+      "state": "S"
+    },
+    {
+      "pid": 1963,
+      "start_ticks": 298305,
+      "ppid": 1962,
+      "pgid": 1962,
+      "sid": 1898,
+      "state": "S"
+    }
+  ],
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 218,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": 469,
+  "shutdown_snapshot_at_ms": 1969,
+  "verdict_at_ms": 2269,
+  "observed_outcome": "FAIL",
+  "findings": [
+    {
+      "id": "LIVE_MEMBERS",
+      "detail": "live cgroup members at shutdown deadline"
+    },
+    {
+      "id": "STDOUT_OPEN",
+      "detail": "stdout did not reach EOF before output deadline"
+    },
+    {
+      "id": "STDERR_OPEN",
+      "detail": "stderr did not reach EOF before output deadline"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

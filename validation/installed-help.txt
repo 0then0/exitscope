@@ -1,0 +1,12 @@
+Check Linux subprocess shutdown contracts independently of harness cleanup
+
+Usage: exitscope <COMMAND>
+
+Commands:
+  run      Run a JSON shutdown profile in a pre-delegated cgroup v2 subtree
+  fixture  Instrumented workload. Inject this through the wrapper under test
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version

@@ -1,0 +1,17 @@
+{
+  "executable": "/bin/sh",
+  "args": ["-c", "exec \"$EXIT_SCOPE_BIN\" fixture --cleanup-ms 150"],
+  "cwd": "/tmp",
+  "scenario": "parent_sigterm",
+  "readiness": "fixture",
+  "readiness_ms": 3000,
+  "shutdown_ms": 1000,
+  "output_ms": 1200,
+  "contract": {
+    "signal_receipt": true,
+    "cleanup_finished": true,
+    "root_waits_cleanup": true,
+    "no_survivors": true,
+    "output_eof": true
+  }
+}

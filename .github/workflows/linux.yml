@@ -1,0 +1,36 @@
+name: Linux validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disposable Linux cgroup namespace
+        # Privilege is explicit and confined to a disposable CI container.
+        # The host cgroup hierarchy is never bind-mounted into the container.
+        run: |
+          docker run --rm --init --privileged --cgroupns=private \
+            -v "$PWD:/work" -w /work \
+            rust:1.99.0 sh -c '
+              set -eu
+              rustup component add rustfmt clippy
+              mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
+              mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
+              mount -o remount,bind,ro /tmp/exitscope-ro
+              EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests \
+              EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro sh scripts/linux-checks.sh
+              python3 tests/delegation.py --cgroup-parent /sys/fs/cgroup/exitscope-tests
+              python3 scripts/external.py --cgroup-parent /sys/fs/cgroup/exitscope-tests
+            '
+      - name: Minimum Rust version
+        run: docker run --rm -v "$PWD:/work" -w /work rust:1.85.0 cargo check --locked
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: all-validation-outcomes
+          path: validation/

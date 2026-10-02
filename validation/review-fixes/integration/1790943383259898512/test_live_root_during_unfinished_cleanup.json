@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "outcome": "FAIL",
+  "config": {
+    "cwd": "/source",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 40,
+    "output_ms": 40,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-fixes/exitscope-988-1790943386674442388",
+  "root": {
+    "pid": 989,
+    "start_ticks": 14953,
+    "ppid": 988,
+    "pgid": 989,
+    "sid": 989,
+    "state": "S"
+  },
+  "root_exit": null,
+  "launch_error": null,
+  "cgroup_empty_at_ms": null,
+  "events": [
+    {
+      "at_ms": 13,
+      "pid": 989,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 51,
+      "pid": 990,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 53,
+      "pid": 990,
+      "kind": "ready",
+      "signal": null
+    },
+    {
+      "at_ms": 58,
+      "pid": 990,
+      "kind": "signal_received",
+      "signal": 15
+    },
+    {
+      "at_ms": 60,
+      "pid": 990,
+      "kind": "cleanup_started",
+      "signal": null
+    }
+  ],
+  "survivors": [
+    {
+      "pid": 989,
+      "start_ticks": 14953,
+      "ppid": 988,
+      "pgid": 989,
+      "sid": 989,
+      "state": "S"
+    },
+    {
+      "pid": 990,
+      "start_ticks": 14958,
+      "ppid": 989,
+      "pgid": 989,
+      "sid": 989,
+      "state": "S"
+    }
+  ],
+  "live_members_present": true,
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": 53,
+  "shutdown_snapshot_at_ms": 94,
+  "verdict_at_ms": 94,
+  "observed_outcome": "FAIL",
+  "cleanup_started_at_ms": 94,
+  "cleanup_finished_at_ms": 101,
+  "findings": [
+    {
+      "id": "ROOT_DEADLINE",
+      "detail": "root did not exit before shutdown deadline"
+    },
+    {
+      "id": "LIVE_MEMBERS",
+      "detail": "live cgroup members at shutdown deadline"
+    },
+    {
+      "id": "STDOUT_OPEN",
+      "detail": "stdout did not reach EOF before output deadline"
+    },
+    {
+      "id": "STDERR_OPEN",
+      "detail": "stderr did not reach EOF before output deadline"
+    },
+    {
+      "id": "CLEANUP_INCOMPLETE",
+      "detail": "worker did not complete cleanup"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

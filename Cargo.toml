@@ -1,0 +1,19 @@
+[package]
+name = "exitscope"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Check Linux subprocess shutdown contracts independently of harness cleanup"
+license = "Apache-2.0"
+
+[dependencies]
+clap = { version = "4.6.7", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+nix = { version = "0.31.3", features = ["signal", "process", "fs", "socket", "poll"] }
+
+[[bin]]
+name = "exitscope"
+path = "src/main.rs"

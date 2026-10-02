@@ -1,0 +1,17 @@
+{
+  "executable": "/bin/sh",
+  "args": ["-c", "\"$EXIT_SCOPE_BIN\" fixture"],
+  "cwd": "/tmp",
+  "scenario": "group_sigkill",
+  "readiness": "fixture",
+  "readiness_ms": 3000,
+  "shutdown_ms": 1000,
+  "output_ms": 1200,
+  "contract": {
+    "signal_receipt": false,
+    "cleanup_finished": false,
+    "root_waits_cleanup": false,
+    "no_survivors": true,
+    "output_eof": true
+  }
+}

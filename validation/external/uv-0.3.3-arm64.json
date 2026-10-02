@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "outcome": "INFRASTRUCTURE_ERROR",
+  "config": {
+    "executable": "/tmp/exitscope-external-ynnnsf18/uv-0.3.3-arm64/uv-aarch64-unknown-linux-gnu/uv",
+    "args": [
+      "run",
+      "--offline",
+      "/work/target/debug/exitscope",
+      "fixture",
+      "--cleanup-ms",
+      "200"
+    ],
+    "cwd": "/tmp/exitscope-external-ynnnsf18/uv-0.3.3-arm64/project",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 10000,
+    "shutdown_ms": 1500,
+    "output_ms": 1800,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1511-1790929442468274262",
+  "root": {
+    "pid": 1512,
+    "start_ticks": 278798,
+    "ppid": 1511,
+    "pgid": 1512,
+    "sid": 1512,
+    "state": "R"
+  },
+  "root_exit": {
+    "at_ms": 87,
+    "code": 2,
+    "signal": null
+  },
+  "events": [
+    {
+      "at_ms": 12,
+      "pid": 1512,
+      "kind": "gated"
+    }
+  ],
+  "survivors": [],
+  "stdout": {
+    "eof_at_ms": 87,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": 87,
+    "bytes": 679,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": null,
+  "shutdown_snapshot_at_ms": 87,
+  "verdict_at_ms": 87,
+  "observed_outcome": "INFRASTRUCTURE_ERROR",
+  "findings": [
+    {
+      "id": "INFRASTRUCTURE",
+      "detail": "root exited before readiness"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

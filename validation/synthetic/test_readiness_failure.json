@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "outcome": "INFRASTRUCTURE_ERROR",
+  "config": {
+    "executable": "python3",
+    "args": [
+      "/work/tests/wrapper.py",
+      "correct",
+      "no_ready"
+    ],
+    "cwd": "/work",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 500,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1107-1790929255451931926",
+  "root": {
+    "pid": 1108,
+    "start_ticks": 260096,
+    "ppid": 1107,
+    "pgid": 1108,
+    "sid": 1108,
+    "state": "R"
+  },
+  "root_exit": null,
+  "events": [
+    {
+      "at_ms": 17,
+      "pid": 1108,
+      "kind": "gated"
+    },
+    {
+      "at_ms": 52,
+      "pid": 1109,
+      "kind": "handler_installed"
+    }
+  ],
+  "survivors": [
+    {
+      "pid": 1108,
+      "start_ticks": 260096,
+      "ppid": 1107,
+      "pgid": 1108,
+      "sid": 1108,
+      "state": "S"
+    },
+    {
+      "pid": 1109,
+      "start_ticks": 260101,
+      "ppid": 1108,
+      "pgid": 1108,
+      "sid": 1108,
+      "state": "S"
+    }
+  ],
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": null,
+  "shutdown_snapshot_at_ms": 1203,
+  "verdict_at_ms": 1203,
+  "observed_outcome": "INFRASTRUCTURE_ERROR",
+  "findings": [
+    {
+      "id": "READINESS_TIMEOUT",
+      "detail": "readiness handshake did not finish before deadline"
+    },
+    {
+      "id": "INFRASTRUCTURE",
+      "detail": "readiness timeout"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

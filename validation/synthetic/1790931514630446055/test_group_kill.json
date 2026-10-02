@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "config": {
+    "cwd": "/work",
+    "scenario": "group_sigkill",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 500,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": false,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-5378-1790931516103726305",
+  "root": {
+    "pid": 5379,
+    "start_ticks": 486169,
+    "ppid": 5378,
+    "pgid": 5379,
+    "sid": 5379,
+    "state": "S"
+  },
+  "root_exit": {
+    "at_ms": 145,
+    "code": null,
+    "signal": 9
+  },
+  "events": [
+    {
+      "at_ms": 19,
+      "pid": 5379,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 139,
+      "pid": 5380,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 142,
+      "pid": 5380,
+      "kind": "ready",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 145,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 145,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 142,
+  "shutdown_snapshot_at_ms": 644,
+  "verdict_at_ms": 744,
+  "observed_outcome": "PASS",
+  "cleanup_started_at_ms": 744,
+  "cleanup_finished_at_ms": 744,
+  "findings": [],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}
