@@ -49,6 +49,46 @@
       "url": "https://github.com/astral-sh/uv/releases/download/0.5.2/uv-aarch64-unknown-linux-gnu.tar.gz",
       "sha256": "e118c53908dc5baf779319129ed93ac783796fbe0b8416db03066877f0425ee6",
       "expected": "PASS"
+    },
+    {
+      "runner": "pnpm",
+      "version": "12.6.0",
+      "tag": "v12.6.0",
+      "commit": "a959dceda501e552dbb03bbab19ab5e060718fde",
+      "arch": "x64",
+      "url": "https://github.com/pnpm/pnpm/releases/download/v12.6.0/pnpm-linux-x64.tar.gz",
+      "sha256": "3f4c66f668d0e84219679982d095b30da68325e1fac9284e7f5dc1584bd3d13e",
+      "expected": "FAIL"
+    },
+    {
+      "runner": "pnpm",
+      "version": "12.7.0",
+      "tag": "v12.7.0",
+      "commit": "b341f5ada21dc59d7d274889a83ce1bdaf7b4351",
+      "arch": "x64",
+      "url": "https://github.com/pnpm/pnpm/releases/download/v12.7.0/pnpm-linux-x64.tar.gz",
+      "sha256": "68190c7d289efecd66ff088c93b9c5ec361989e8194239e004bd905403d3d3e5",
+      "expected": "PASS"
+    },
+    {
+      "runner": "uv",
+      "version": "0.5.1",
+      "tag": "0.5.1",
+      "commit": "f399a52719a032ee41975c3eb3fdd1631b3d10cc",
+      "arch": "x64",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.5.1/uv-x86_64-unknown-linux-gnu.tar.gz",
+      "sha256": "942e29ff6769b096c7c99e9c3b1c08276869667d0d5d6121852dd9b9d875b3f3",
+      "expected": "FAIL"
+    },
+    {
+      "runner": "uv",
+      "version": "0.5.2",
+      "tag": "0.5.2",
+      "commit": "195f4b634ff0230fcef5445c6023a74faab92184",
+      "arch": "x64",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.5.2/uv-x86_64-unknown-linux-gnu.tar.gz",
+      "sha256": "d2d9d4b9ce536ab7ebb09d33629694385a3ebb72d156ae0b4dd28c9b6f6cbd13",
+      "expected": "PASS"
     }
   ]
 }

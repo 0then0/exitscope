@@ -1,0 +1,98 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded clap v4.6.7
+  Downloaded clap_lex v1.1.1
+  Downloaded memoffset v0.9.1
+  Downloaded anstyle-parse v1.0.0
+  Downloaded anstream v1.0.0
+  Downloaded anstyle v1.0.14
+  Downloaded cfg_aliases v0.2.2
+  Downloaded colorchoice v1.0.5
+  Downloaded anstyle-query v1.1.5
+  Downloaded cfg-if v1.0.5
+  Downloaded heck v0.5.0
+  Downloaded is_terminal_polyfill v1.70.2
+  Downloaded itoa v1.0.18
+  Downloaded utf8parse v0.2.2
+  Downloaded strsim v0.11.1
+  Downloaded quote v1.0.47
+  Downloaded autocfg v1.5.1
+  Downloaded zmij v1.0.23
+  Downloaded clap_derive v4.6.7
+  Downloaded unicode-ident v1.0.26
+  Downloaded serde_core v1.0.229
+  Downloaded bitflags v2.13.2
+  Downloaded proc-macro2 v1.0.107
+  Downloaded serde_derive v1.0.229
+  Downloaded serde v1.0.229
+  Downloaded memchr v2.8.3
+  Downloaded serde_json v1.0.151
+  Downloaded clap_builder v4.6.7
+  Downloaded syn v3.0.6
+  Downloaded nix v0.31.3
+  Downloaded libc v0.2.189
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling autocfg v1.5.1
+   Compiling utf8parse v0.2.2
+   Compiling serde_core v1.0.229
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling colorchoice v1.0.5
+   Compiling libc v0.2.189
+   Compiling anstyle-parse v1.0.0
+   Compiling zmij v1.0.23
+   Compiling anstyle-query v1.1.5
+   Compiling anstyle v1.0.14
+   Compiling cfg_aliases v0.2.2
+   Compiling memoffset v0.9.1
+   Compiling nix v0.31.3
+   Compiling serde v1.0.229
+   Compiling strsim v0.11.1
+   Compiling heck v0.5.0
+   Compiling anstream v1.0.0
+   Compiling clap_lex v1.1.1
+   Compiling serde_json v1.0.151
+   Compiling itoa v1.0.18
+   Compiling clap_builder v4.6.7
+   Compiling cfg-if v1.0.5
+   Compiling bitflags v2.13.2
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.6
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling clap v4.6.7
+   Compiling exitscope v0.1.1 (/work)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.27s
+     Running unittests src/main.rs (/tmp/exitscope-target/debug/deps/exitscope-2a2ff87490219050)
+
+running 13 tests
+test model::tests::disabled_receipt_allows_late_evidence ... ok
+test model::tests::late_receipt_cannot_use_longer_output_deadline ... ok
+test model::tests::late_empty_snapshot_is_unresolved ... ok
+test model::tests::late_receipt_without_readiness_is_unresolved ... ok
+test model::tests::absent_telemetry_is_unresolved ... ok
+test linux::tests::proc_identity_is_own_process ... ok
+test model::tests::cleanup_cannot_erase_violation ... ok
+test model::tests::signal_and_wait_are_required ... ok
+test model::tests::verified_contract_passes ... ok
+test model::tests::missing_wait_evidence_does_not_claim_early_root_exit ... ok
+test model::tests::missing_receipt_depends_on_confirmed_readiness ... ok
+test model::tests::receipt_deadline_is_inclusive_and_relative_to_impact ... ok
+test linux::tests::pidfd_reports_exit_without_reaping ... FAILED
+
+failures:
+
+---- linux::tests::pidfd_reports_exit_without_reaping stdout ----
+
+thread 'linux::tests::pidfd_reports_exit_without_reaping' (692) panicked at src/linux.rs:206:43:
+called `Result::unwrap()` on an `Err` value: Os { code: 38, kind: Unsupported, message: "Function not implemented" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    linux::tests::pidfd_reports_exit_without_reaping
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+error: test failed, to rerun pass `--bin exitscope`

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "outcome": "UNRESOLVED",
+  "config": {
+    "cwd": "/tmp/exitscope-observer-5kq3gwav",
+    "scenario": "group_sigkill",
+    "readiness": "fixture",
+    "readiness_ms": 3000,
+    "shutdown_ms": 200,
+    "output_ms": 2000,
+    "contract": {
+      "signal_receipt": false,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1973-1790951785395015758",
+  "root": {
+    "pid": 1974,
+    "start_ticks": 562912,
+    "ppid": 1973,
+    "pgid": 1974,
+    "sid": 1974,
+    "state": "S"
+  },
+  "root_exit": {
+    "at_ms": 149,
+    "code": null,
+    "signal": 9
+  },
+  "launch_error": null,
+  "cgroup_empty_at_ms": 966,
+  "events": [
+    {
+      "at_ms": 11,
+      "pid": 1974,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 144,
+      "pid": 1975,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 146,
+      "pid": 1975,
+      "kind": "ready",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 966,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 966,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 147,
+  "shutdown_snapshot_at_ms": 966,
+  "verdict_at_ms": 2148,
+  "observed_outcome": "UNRESOLVED",
+  "cleanup_started_at_ms": 2148,
+  "cleanup_finished_at_ms": 2149,
+  "findings": [
+    {
+      "id": "CGROUP_DEADLINE_UNOBSERVED",
+      "detail": "cgroup emptiness was not observed before shutdown deadline"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

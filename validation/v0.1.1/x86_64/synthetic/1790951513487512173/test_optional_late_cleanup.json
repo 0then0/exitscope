@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "outcome": "INFRASTRUCTURE_ERROR",
+  "config": {
+    "cwd": "/work",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 80,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": false,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=x86_64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-976-1790951514968912841",
+  "root": null,
+  "root_exit": null,
+  "launch_error": null,
+  "cgroup_empty_at_ms": null,
+  "events": [],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "stderr": {
+    "eof_at_ms": null,
+    "bytes": 0,
+    "eof_before_deadline": false
+  },
+  "impact_at_ms": null,
+  "shutdown_snapshot_at_ms": 20,
+  "verdict_at_ms": 20,
+  "observed_outcome": "INFRASTRUCTURE_ERROR",
+  "cleanup_started_at_ms": 20,
+  "cleanup_finished_at_ms": 22,
+  "findings": [
+    {
+      "id": "INFRASTRUCTURE",
+      "detail": "Function not implemented (os error 38)"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

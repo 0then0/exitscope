@@ -7,7 +7,17 @@ permissions:
   contents: read
 jobs:
   linux:
-    runs-on: ubuntu-24.04-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+          - arch: x86_64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Disposable Linux cgroup namespace
@@ -15,22 +25,36 @@ jobs:
         # The host cgroup hierarchy is never bind-mounted into the container.
         run: |
           docker run --rm --init --privileged --cgroupns=private \
+            --platform ${{ matrix.platform }} \
             -v "$PWD:/work" -w /work \
             rust:1.99.0 sh -c '
               set -eu
-              rustup component add rustfmt clippy
+              reports=validation/ci/${{ matrix.arch }}
+              mkdir -p "$reports"
+              { cat /etc/os-release; uname -a; rustc --version; } > "$reports/environment.txt"
+              if [ "${{ matrix.arch }}" = arm64 ]; then
+                rustup component add rustfmt clippy
+                cargo fmt --check
+                cargo clippy --locked --all-targets -- -D warnings
+              fi
               mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
               mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
               mount -o remount,bind,ro /tmp/exitscope-ro
+              status=0
               EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests \
-              EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro sh scripts/linux-checks.sh
-              python3 tests/delegation.py --cgroup-parent /sys/fs/cgroup/exitscope-tests
-              python3 scripts/external.py --cgroup-parent /sys/fs/cgroup/exitscope-tests
+              EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 \
+              EXITSCOPE_REPORTS="$reports" sh scripts/linux-checks.sh || status=1
+              python3 tests/delegation.py --cgroup-parent /sys/fs/cgroup/exitscope-tests \
+                --reports "$reports/delegation" || status=1
+              python3 scripts/external.py --cgroup-parent /sys/fs/cgroup/exitscope-tests \
+                --reports "$reports/external" || status=1
+              exit "$status"
             '
       - name: Minimum Rust version
+        if: ${{ always() && matrix.arch == 'arm64' }}
         run: docker run --rm -v "$PWD:/work" -w /work rust:1.85.0 cargo check --locked
       - uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
-          name: all-validation-outcomes
-          path: validation/
+          name: all-validation-outcomes-${{ matrix.arch }}
+          path: validation/ci/${{ matrix.arch }}/

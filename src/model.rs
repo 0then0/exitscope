@@ -245,10 +245,16 @@ pub fn evaluate(r: &mut Report, telemetry: bool, root_waited: Option<bool>) {
         return;
     };
     let seen = |kind: &str| r.events.iter().any(|e| e.kind == kind);
+    let shutdown_deadline = r.impact_at_ms.unwrap_or(0) + c.shutdown_ms;
     let receipt = r
         .events
         .iter()
         .any(|e| e.kind == "signal_received" && e.signal == Some(15));
+    // Receipt is observer evidence, not a kernel delivery timestamp. The boundary
+    // is inclusive, matching root exit and the independently observed EOFs.
+    let timely_receipt = r.events.iter().any(|e| {
+        e.kind == "signal_received" && e.signal == Some(15) && e.at_ms <= shutdown_deadline
+    });
     let wrong_signal = seen("signal_received") && !receipt;
     let finished = seen("cleanup_finished");
     if r.root_exit
@@ -277,7 +283,7 @@ pub fn evaluate(r: &mut Report, telemetry: bool, root_waited: Option<bool>) {
         );
     }
     if telemetry {
-        if c.contract.signal_receipt && !receipt {
+        if c.contract.signal_receipt && !timely_receipt {
             if wrong_signal {
                 r.finding(
                     "WRONG_SIGNAL",
@@ -286,7 +292,11 @@ pub fn evaluate(r: &mut Report, telemetry: bool, root_waited: Option<bool>) {
             } else {
                 r.finding(
                     "SIGNAL_NOT_RECEIVED",
-                    "instrumented worker did not report SIGTERM",
+                    if receipt {
+                        "instrumented worker reported SIGTERM only after shutdown deadline"
+                    } else {
+                        "instrumented worker did not report SIGTERM by shutdown deadline"
+                    },
                 );
             }
         }
@@ -365,6 +375,78 @@ mod tests {
             },
             ..Default::default()
         }
+    }
+    fn receipt_report(at_ms: Option<u64>) -> Report {
+        let mut r = report();
+        let c = r.config.as_mut().unwrap();
+        c.shutdown_ms = 100;
+        c.output_ms = 700;
+        c.contract.cleanup_finished = false;
+        c.contract.root_waits_cleanup = false;
+        c.contract.no_survivors = false;
+        r.impact_at_ms = Some(64);
+        r.root_exit.as_mut().unwrap().at_ms = 74;
+        r.stdout.eof_at_ms = Some(431);
+        r.stderr.eof_at_ms = Some(431);
+        if let Some(at_ms) = at_ms {
+            r.events.push(Event {
+                at_ms,
+                pid: 7,
+                kind: "signal_received".into(),
+                signal: Some(15),
+            });
+        }
+        r
+    }
+    #[test]
+    fn late_receipt_cannot_use_longer_output_deadline() {
+        let mut r = receipt_report(Some(417));
+        evaluate(&mut r, true, None);
+        assert_eq!(r.outcome, Outcome::Fail);
+        assert_eq!(r.findings.len(), 1);
+        assert_eq!(r.findings[0].id, "SIGNAL_NOT_RECEIVED");
+        assert!(r.findings[0].detail.contains("after shutdown deadline"));
+        assert_eq!(r.events[0].at_ms, 417);
+    }
+    #[test]
+    fn receipt_deadline_is_inclusive_and_relative_to_impact() {
+        for (at_ms, expected) in [
+            (163, Outcome::Pass),
+            (164, Outcome::Pass),
+            (165, Outcome::Fail),
+        ] {
+            let mut r = receipt_report(Some(at_ms));
+            evaluate(&mut r, true, None);
+            assert_eq!(r.outcome, expected, "receipt at {at_ms} ms");
+        }
+    }
+    #[test]
+    fn disabled_receipt_allows_late_evidence() {
+        let mut r = receipt_report(Some(417));
+        r.config.as_mut().unwrap().contract.signal_receipt = false;
+        evaluate(&mut r, true, None);
+        assert_eq!(r.outcome, Outcome::Pass);
+        assert!(r.findings.is_empty());
+    }
+    #[test]
+    fn missing_receipt_depends_on_confirmed_readiness() {
+        for (ready, expected, id) in [
+            (true, Outcome::Fail, "SIGNAL_NOT_RECEIVED"),
+            (false, Outcome::Unresolved, "TELEMETRY_MISSING"),
+        ] {
+            let mut r = receipt_report(None);
+            evaluate(&mut r, ready, None);
+            assert_eq!(r.outcome, expected);
+            assert_eq!(r.findings.len(), 1);
+            assert_eq!(r.findings[0].id, id);
+        }
+    }
+    #[test]
+    fn late_receipt_without_readiness_is_unresolved() {
+        let mut r = receipt_report(Some(417));
+        evaluate(&mut r, false, None);
+        assert_eq!(r.outcome, Outcome::Unresolved);
+        assert_eq!(r.findings[0].id, "TELEMETRY_MISSING");
     }
     #[test]
     fn late_empty_snapshot_is_unresolved() {

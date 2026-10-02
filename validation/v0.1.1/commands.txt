@@ -1,0 +1,56 @@
+Executed locally on 2026-10-02; host macOS ARM64, Docker Desktop ARM64 Linux VM.
+Commands below identify actual executions. Full stdout/stderr is in each named log.
+No hosted workflow was dispatched. No systemd recipe was executed.
+
+Baseline (arm64/baseline-build.txt, baseline-reproduction.txt):
+  docker run -d --rm --name exitscope-v011-arm64 --platform linux/arm64 --init --privileged --cgroupns=private -v "$PWD:/work" -w /work -e CARGO_TARGET_DIR=/tmp/exitscope-target rust:1.99.0 sleep infinity
+  docker exec exitscope-v011-arm64 sh -c 'mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro; mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro; mount -o remount,bind,ro /tmp/exitscope-ro; cat /etc/os-release; uname -a; rustc --version; rustup component add rustfmt clippy; mkdir /tmp/exitscope-baseline; cp -R src Cargo.toml Cargo.lock /tmp/exitscope-baseline; git show HEAD:src/model.rs > /tmp/exitscope-baseline/src/model.rs; cargo build --locked --manifest-path /tmp/exitscope-baseline/Cargo.toml --target-dir /tmp/exitscope-baseline/target'
+  docker exec exitscope-v011-arm64 python3 -c 'import argparse, runpy; from pathlib import Path; m=runpy.run_path("tests/observer_regressions.py"); p=Path("validation/v0.1.1/arm64/baseline"); p.mkdir(parents=True, exist_ok=True); m["run_receipt_case"](argparse.Namespace(binary=Path("/tmp/exitscope-baseline/target/debug/exitscope"), cgroup_parent=Path("/sys/fs/cgroup/exitscope-tests"), reports=p), "receipt-late")'
+  Baseline assertion failed as expected: old verdict was PASS. JSON retained.
+
+ARM64 (arm64/checks.txt, external-checks.txt, msrv.txt):
+  docker exec exitscope-v011-arm64 sh -c 'cargo fmt; cargo fmt --check; cargo clippy --locked --all-targets -- -D warnings; EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 EXITSCOPE_REPORTS=validation/v0.1.1/arm64 sh scripts/linux-checks.sh'
+  docker exec exitscope-v011-arm64 sh -c 'python3 tests/delegation.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/arm64/delegation; python3 scripts/external.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/arm64/external'
+  docker run --rm --platform linux/arm64 -v "$PWD:/work" -w /work -e CARGO_TARGET_DIR=/tmp/exitscope-msrv rust:1.85.0 cargo check --locked
+  docker exec exitscope-v011-arm64 python3 tests/observer_regressions.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/arm64/observer-final
+  All passed. Observer rerun after early-error artifact preservation edit.
+
+x86_64 emulation (x86_64/image-pull.txt, checks.txt, external-discovery.txt, runtime-attempt.txt, external-verified.txt):
+  docker pull --platform linux/amd64 rust:1.99.0
+  docker run -d --rm --name exitscope-v011-x64 --platform linux/amd64 --init --privileged --cgroupns=private -v "$PWD:/work" -w /work -e CARGO_TARGET_DIR=/tmp/exitscope-target rust:1.99.0 sleep infinity
+  docker exec exitscope-v011-x64 sh -c 'mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro; mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro; mount -o remount,bind,ro /tmp/exitscope-ro; cat /etc/os-release; uname -a; rustc --version; cargo --version; id; ps -p 1 -o comm=; cat /proc/self/cgroup; stat -f -c %T /sys/fs/cgroup'
+  docker exec exitscope-v011-x64 sh -c 'EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 EXITSCOPE_REPORTS=validation/v0.1.1/x86_64 sh scripts/linux-checks.sh'
+  docker exec exitscope-v011-x64 sh -c 'cargo build --locked; python3 tests/delegation.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/x86_64/delegation; python3 scripts/external.py --discover --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/x86_64/external-discovery'
+  docker exec exitscope-v011-x64 sh -c 'EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro python3 tests/integration.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/x86_64/synthetic; python3 tests/observer_regressions.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/x86_64/observer'
+  docker exec exitscope-v011-x64 python3 scripts/external.py --binary /tmp/exitscope-target/debug/exitscope --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/x86_64/external-verified
+  Build and 12 unit tests passed; pidfd lifecycle failed with ENOSYS. Runtime suites failed/aborted; all external engine attempts INFRASTRUCTURE_ERROR. Pins verified. Expectations unchanged.
+
+Environment and cleanup probes (per-architecture environment.txt, cleanup-inspection.txt):
+  docker info --format '{{.Architecture}} {{.OperatingSystem}}'
+  docker inspect exitscope-v011-arm64 exitscope-v011-x64 --format '{{.Name}} {{.Image}}'
+  docker exec <container> sh -c 'cat /etc/os-release; uname -a; rustc --version; cargo --version; id; ps -p 1 -o comm=; cat /proc/self/cgroup; stat -f -c %T /sys/fs/cgroup'
+  docker exec <container> sh -c 'find /sys/fs/cgroup/exitscope-tests -mindepth 1 -type d; find /tmp -maxdepth 1 -name "exitscope-*" -type d; ps -eo pid,ppid,stat,args | head -20'
+  No run cgroup directories, target processes or private IPC directories remained.
+
+Systemd availability (systemd-environment-probe.txt):
+  uname -a
+  command -v limactl multipass qemu-system-aarch64 qemu-system-x86_64 virsh
+  docker exec exitscope-v011-arm64 sh -c 'ps -p 1 -o comm=; systemd --version; systemctl --user show-environment'
+  No suitable VM tool / systemd user-manager environment found.
+
+Local syntax / final diff checks:
+  python3 -m py_compile tests/observer_regressions.py scripts/external.py
+  sh -n scripts/linux-checks.sh
+  git diff --check
+
+Additional final verification:
+  docker exec exitscope-v011-x64 python3 -c 'import os, platform; print("machine=" + platform.machine()); print("pidfd_open(self)=", end="", flush=True); print(os.pidfd_open(os.getpid()))'
+  Independent of ExitScope, this also returned ENOSYS (x86_64/pidfd-environment-probe.txt).
+  docker exec exitscope-v011-x64 sh -c 'EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 EXITSCOPE_REPORTS=validation/v0.1.1/x86_64/final-pipeline sh scripts/linux-checks.sh'
+  This repeated the failed pipeline after its shell status handling changed, confirming that integration/observer execute after unit failure. Same ENOSYS blocker retained (x86_64/final-pipeline.txt).
+  Ruby standard-library YAML parser verified the workflow matrix and sh -n verified its expanded embedded run scripts.
+  Source manifest audit verified x64 commits match existing arm64 commits and all new SHA256 values have the expected format.
+  Per-container JSON resource audit checked each report's cgroup path and /tmp/<run-name> IPC directory were absent and the delegated subtree had no run directories. Results: 40 ARM64 and 53 x86_64 reported runs (resource-audit.txt).
+  docker stop exitscope-v011-arm64 exitscope-v011-x64
+  docker ps -a --filter name=exitscope-v011 --format '{{.Names}}'
+  Both disposable containers removed; no matching containers remained (container-disposal.txt).

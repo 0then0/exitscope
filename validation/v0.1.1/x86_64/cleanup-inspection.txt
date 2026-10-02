@@ -1,0 +1,8 @@
+/tmp/exitscope-ro
+/tmp/exitscope-target
+    PID    PPID STAT COMMAND
+      1       0 Ss   /sbin/docker-init -- sleep infinity
+      7       1 S    sleep infinity
+   1027       0 Ss   sh -c find /sys/fs/cgroup/exitscope-tests -mindepth 1 -type d; find /tmp -maxdepth 1 -name "exitscope-*" -type d; ps -eo pid,ppid,stat,args | head -20
+   1035    1027 R    ps -eo pid,ppid,stat,args
+   1036    1027 S    head -20

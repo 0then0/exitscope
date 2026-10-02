@@ -1,0 +1,15 @@
+{
+  "source": {
+    "runner": "pnpm",
+    "version": "12.7.0",
+    "tag": "v12.7.0",
+    "commit": "b341f5ada21dc59d7d274889a83ce1bdaf7b4351",
+    "arch": "x64",
+    "url": "https://github.com/pnpm/pnpm/releases/download/v12.7.0/pnpm-linux-x64.tar.gz",
+    "sha256": "68190c7d289efecd66ff088c93b9c5ec361989e8194239e004bd905403d3d3e5",
+    "expected": "PASS"
+  },
+  "observed_version": "12.7.0",
+  "outcome": "INFRASTRUCTURE_ERROR",
+  "exit_code": 3
+}

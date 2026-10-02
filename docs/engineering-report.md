@@ -3,6 +3,236 @@
 Date: 2026-10-02. All runtime results below are **our own Linux executions**,
 unless explicitly labelled upstream evidence or engineering inference.
 
+## v0.1.1 milestone status, 2026-10-02
+
+**Prepared locally, acceptance incomplete, not ready to release or declare the
+maintenance transition complete.** ARM64 correctness and external validation
+passed. Native x86_64 execution, all four expected x86_64 external outcomes, and
+the real systemd user-manager recipe remain open. Hosted CI was configured but
+not executed. Everything after this section is retained historical v0.1.0 evidence,
+including unsuccessful attempts; the current evidence is under
+[validation/v0.1.1](../validation/v0.1.1/).
+
+### Confirmed defect and verdict change
+
+The hypothesis was confirmed both in source and by running the pre-change engine
+with the new controlled regression. It accepted SIGTERM without checking its
+receipt timestamp while collecting evidence until `max(shutdown_ms, output_ms)`.
+The [baseline report](../validation/v0.1.1/arm64/baseline/receipt-late.json) records
+impact 62 ms, root exit 67 ms, shutdown deadline 562 ms, snapshot 564 ms, receipt
+1372 ms, stream EOF 1379 ms, and **PASS with no findings**. The worker deliberately
+waited after receiving SIGTERM before reporting it. This demonstrates late
+observation, and makes no assertion of late kernel delivery.
+
+`model::evaluate` now requires `signal_received.at_ms <= impact_at_ms + shutdown_ms`
+for SIGTERM confirmation. Timestamps are integer monotonic milliseconds; the exact
+boundary is inclusive, consistent with existing root/EOF comparisons. Late evidence
+remains intact and yields FAIL after acknowledged readiness with the existing
+`SIGNAL_NOT_RECEIVED` ID and detail explaining the missed deadline. This ID means
+no timely confirmation, even if confirmation is eventually observed. No new IDs,
+report schema, deadline framework or engine dependencies were introduced.
+
+Longer output observation cannot extend shutdown. The selective contract requires
+root exit, signal receipt and both EOFs while disabling cleanup completion, root
+waiting and no-survivors. It now fails only `SIGNAL_NOT_RECEIVED` for a late receipt;
+the timely control passes. Disabling receipt passes with the same late evidence.
+Absent required telemetry remains FAIL with readiness, UNRESOLVED without readiness;
+an independent violation still establishes FAIL. The unrelated cleanup, root-wait,
+survivor and EOF semantics were preserved, including verdict freeze before cleanup.
+
+### Changes and verification
+
+- `src/model.rs`: receipt deadline in pure evaluation and five regression tests
+  covering late/disabled receipt, exact deadline minus/equal/plus one millisecond,
+  readiness-dependent missing evidence, and late evidence without readiness.
+- `tests/observer_regressions.py`: three real-process selective-contract cases,
+  blocked SIGTERM before spawn, acknowledged readiness, sigwait-based forwarding,
+  and an 800 ms margin between shutdown deadline and delayed reporting. Tests
+  verify retained evidence, observer outside the test cgroup, verdict-before-cleanup,
+  cgroup removal and IPC removal. Early infrastructure results are also saved.
+- `.github/workflows/linux.yml`, `scripts/linux-checks.sh`: native ARM64/x86_64
+  runner matrix, each executing build/unit/integration/observer/delegation/external
+  checks. Fail-fast is disabled, architecture-specific artifacts upload with
+  `always()`, independent suites continue after failures. Formatting/clippy/MSRV
+  run once to avoid duplicate expensive checks.
+- `scripts/external.py`, `validation/upstream-sources.json`: four x86_64 archives
+  discovered using the existing maintainer workflow, preserving ARM64 and old uv
+  entries. Exact URLs, SHA256 and tag commits are recorded. Normal mode re-downloaded
+  and verified the new pins. Adapters additionally check exit mapping and removal
+  of run/IPC resources after preserving reports. Expectations were not changed.
+- `Cargo.toml`, `Cargo.lock`: package version 0.1.1; dependency graph unchanged.
+  README, this report and [release notes](release-notes-v0.1.1.md) describe actual
+  evidence, the receipt/delivery distinction and incomplete acceptance.
+
+Native local ARM64 execution: Debian **13.7 (trixie)**, Linux
+**7.0.14-linuxkit**, Docker Desktop private cgroup v2 namespace, explicit privileged
+container setup, Rust **1.99.0**. The underlying development host is macOS ARM64;
+this is Linux container validation, not macOS runtime support. Results:
+
+- `cargo fmt --check`, `cargo clippy --locked --all-targets -- -D warnings`: passed.
+- `cargo test --locked`: **13 passed**, including actual Linux pidfd lifecycle.
+- `cargo build --locked`: passed; `cargo check --locked` in `rust:1.85.0`: passed.
+- Linux integration suite: **23 passed**, no skips; observer suite: **6 passed**.
+  The observer suite was repeated after adding early-error artifact preservation.
+- Delegation: common-ancestor migration denied with `cgroup_join` / EACCES gives
+  INFRASTRUCTURE_ERROR; explicit permissions limited to the private subtree give
+  UID 65534 PASS. This is container delegation evidence, not systemd recipe proof.
+- External ARM64: **pnpm 12.6.0 FAIL, 12.7.0 PASS; uv 0.5.1 FAIL, 0.5.2 PASS**.
+  Broken reports remain FAIL after successful forced cleanup. All expected outcomes
+  matched, including exit-code mapping and resource-removal checks.
+
+[ARM64 check output](../validation/v0.1.1/arm64/checks.txt),
+[observer final output](../validation/v0.1.1/arm64/observer-final.txt),
+[delegation/external output](../validation/v0.1.1/arm64/external-checks.txt) and
+[MSRV output](../validation/v0.1.1/arm64/msrv.txt) are preserved with all JSON reports.
+
+Local x86_64 **emulation**, on the same ARM64 LinuxKit VM: Debian 13.7, Rust 1.99.0.
+Build succeeded and 12 Rust tests passed, including all pure verdict tests.
+The pidfd lifecycle test failed: `pidfd_open` returned **ENOSYS (errno 38)**. Runtime
+attempts fail before impact/readiness for the same missing syscall; this is an
+emulation environment limitation, not evidence of broken forwarding in the targets.
+An [independent Python pidfd probe](../validation/v0.1.1/x86_64/pidfd-environment-probe.txt)
+also returned ENOSYS, without using ExitScope.
+Of 23 integration tests, 2 setup checks passed and 21 failed their expected-outcome
+assertions. Observer stopped at its first pre-readiness infrastructure result;
+delegation stopped before verifying the expected migration-denied diagnostic.
+All four upstream binaries executed `--version` successfully, but ExitScope returned
+**INFRASTRUCTURE_ERROR for pnpm 12.6.0/12.7.0 and uv 0.5.1/0.5.2** in both discovery
+and subsequent hash-verifying runs. No expectations or engine syscall protections
+were weakened. [Build/unit output](../validation/v0.1.1/x86_64/checks.txt),
+[runtime attempt](../validation/v0.1.1/x86_64/runtime-attempt.txt),
+[discovery](../validation/v0.1.1/x86_64/external-discovery.txt) and
+[normal pin verification](../validation/v0.1.1/x86_64/external-verified.txt) retain
+these failures and reports. This does **not** satisfy x86_64 Linux compatibility.
+
+Post-run inspections in each container found no run cgroup directories, target
+processes or private IPC directories. Build directories and the explicit read-only
+mount remained only until disposal of the validation containers. JSON reports
+record `os=linux; arch=aarch64` or `arch=x86_64` and the kernel. Execution metadata
+and cleanup inspections are stored per architecture. CI is configured for native
+hosted runners; no hosted success or minimum-kernel success is claimed.
+
+### Commands actually executed
+
+The execution inventory is [commands.txt](../validation/v0.1.1/commands.txt).
+Each architecture used a separate disposable container, avoiding shared build
+outputs, with this explicit setup (ARM64 shown; x86_64 used `linux/amd64` and its
+own container name). No host cgroup hierarchy was bind-mounted:
+
+```sh
+docker run -d --rm --name exitscope-v011-arm64 --platform linux/arm64 \
+  --init --privileged --cgroupns=private -v "$PWD:/work" -w /work \
+  -e CARGO_TARGET_DIR=/tmp/exitscope-target rust:1.99.0 sleep infinity
+docker exec exitscope-v011-arm64 sh -c '
+  mkdir /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
+  mount --bind /sys/fs/cgroup/exitscope-tests /tmp/exitscope-ro
+  mount -o remount,bind,ro /tmp/exitscope-ro
+  rustup component add rustfmt clippy
+  cargo fmt
+  cargo fmt --check
+  cargo clippy --locked --all-targets -- -D warnings
+  EXITSCOPE_CGROUP_PARENT=/sys/fs/cgroup/exitscope-tests \
+  EXITSCOPE_READONLY_CGROUP=/tmp/exitscope-ro EXITSCOPE_CHECK_STYLE=0 \
+  EXITSCOPE_REPORTS=validation/v0.1.1/arm64 sh scripts/linux-checks.sh
+  python3 tests/delegation.py --binary /tmp/exitscope-target/debug/exitscope \
+    --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/arm64/delegation
+  python3 scripts/external.py --binary /tmp/exitscope-target/debug/exitscope \
+    --cgroup-parent /sys/fs/cgroup/exitscope-tests --reports validation/v0.1.1/arm64/external
+'
+docker run --rm --platform linux/arm64 -v "$PWD:/work" -w /work \
+  -e CARGO_TARGET_DIR=/tmp/exitscope-msrv rust:1.85.0 cargo check --locked
+```
+
+The x86_64 external discovery ran `scripts/external.py --discover` on the x86_64
+container and then normal mode without `--discover`. The pinned tag commits match
+ARM64. The source manifest calls x86_64 `x64` to match pnpm asset names; uv uses
+`x86_64-unknown-linux-gnu`. Local Python syntax checks and `sh -n
+scripts/linux-checks.sh` passed. These executions install no project dependencies.
+
+### Systemd recipe blocker and exact remaining reproduction
+
+No suitable Linux host or disposable VM with a running systemd user manager was
+available. The host is macOS, available Linux containers have `docker-init` PID 1,
+`systemd` and `systemctl` are absent, and no Lima, Multipass, QEMU or libvirt VM
+command was available. [Environment probes](../validation/v0.1.1/systemd-environment-probe.txt)
+record exact commands and statuses. No systemd version or systemd execution result
+can be reported. This acceptance criterion is **unfulfilled**. The privileged
+UID 65534 checks above must not be substituted for it.
+
+The following is an **unexecuted reproduction**, on a real suitable Linux host/VM,
+logged in as its ordinary non-root user, with repository and Rust already present:
+
+```sh
+cd /absolute/path/to/exitscope
+cargo build --locked
+systemd-run --user --pty --collect --property=Delegate=yes bash
+# Inside that explicitly delegated shell:
+cd /absolute/path/to/exitscope
+test "$(id -u)" -ne 0
+parent="/sys/fs/cgroup$(awk -F: '$1 == "0" { print $3 }' /proc/self/cgroup)"
+mkdir "$parent/harness" "$parent/runs"
+printf '%s\n' "$$" > "$parent/harness/cgroup.procs"
+reports="$PWD/validation/systemd/$(date +%s)-$(uname -m)"
+mkdir -p "$reports"
+{ cat /etc/os-release; uname -a; systemd --version; id; \
+  systemctl --user show-environment >/dev/null; cat /proc/self/cgroup; \
+  stat -f -c %T "$parent"; ls -ld "$parent" "$parent/cgroup.procs"; \
+} > "$reports/environment.txt"
+python3 - --cgroup-parent "$parent/runs" --reports "$reports/integration" <<'PY'
+import runpy
+import unittest
+m = runpy.run_path("tests/integration.py", run_name="systemd_validation")
+suite = unittest.TestSuite(m["Integration"](name) for name in [
+    "test_correct_forwarding", "test_missing_forwarding_and_pipes"])
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+raise SystemExit(0 if result.wasSuccessful() else 1)
+PY
+python3 tests/observer_regressions.py --cgroup-parent "$parent/runs" \
+  --reports "$reports/observer"
+python3 - "$reports" "$parent/runs" <<'PY'
+import json
+import sys
+import tempfile
+from pathlib import Path
+for path in Path(sys.argv[1]).rglob("*.json"):
+    r = json.loads(path.read_text())
+    if r.get("cgroup"):
+        assert not Path(r["cgroup"]).exists(), path
+        assert not (Path(tempfile.gettempdir()) / Path(r["cgroup"]).name).exists(), path
+        assert r["verdict_at_ms"] <= r["cleanup_started_at_ms"], path
+assert not [p for p in Path(sys.argv[2]).iterdir() if p.is_dir()]
+PY
+rmdir "$parent/runs"
+exit
+# systemd collects the stopped service; its harness subtree is service-owned.
+```
+
+The availability probe discards the user manager's environment because imported
+variables may contain credentials. `tests/documentation.py` exercises this exact
+diagnostic block with a fake manager and a dummy secret; it checks that the probe
+runs and the secret is absent from reports and console output. This test does not
+validate a real systemd setup and runs with the Linux checks on both architectures.
+
+Save console output and exact commands alongside these reports. The positive case
+must PASS; broken forwarding must FAIL with survivors; the observer regressions
+explicitly assert observer exclusion and IPC/cgroup removal. No automatic privilege
+escalation, hierarchy changes, recursive chown, installed service or watchdog is
+part of ExitScope. A denial by user-manager policy is a setup blocker, not a target
+shutdown result. The independent migration-permission negative check remains the
+recorded ARM64 container test until reproduced in another suitable environment.
+
+### Release and maintenance decision
+
+The deadline fix is verified on ARM64 and in pure evaluation. Release metadata and
+notes are prepared. Acceptance still requires native x86_64 suites and four expected
+external outcomes, plus actual systemd recipe execution with ordinary-user setup,
+recorded systemd version, observer exclusion and cleanup. Kernel 5.14 and hosted CI
+are also unverified; no minimum-kernel execution claim is made. External binary
+validation establishes target behavior, not external adoption. No upstream PRs,
+tags or release publication were performed. The original preparation was left
+uncommitted; the review follow-up is authorized for commit and push. Maintenance begins
+when this limited acceptance is fulfilled; new capabilities require confirmed need.
+
 ## Implemented behavior and architecture
 
 Both scoped scenarios are implemented: parent-only SIGTERM and dedicated-group

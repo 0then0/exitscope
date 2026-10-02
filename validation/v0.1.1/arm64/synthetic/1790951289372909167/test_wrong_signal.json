@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "outcome": "FAIL",
+  "config": {
+    "cwd": "/work",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 500,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1714-1790951299987976588",
+  "root": {
+    "pid": 1715,
+    "start_ticks": 514371,
+    "ppid": 1714,
+    "pgid": 1715,
+    "sid": 1715,
+    "state": "R"
+  },
+  "root_exit": {
+    "at_ms": 186,
+    "code": 0,
+    "signal": null
+  },
+  "launch_error": null,
+  "cgroup_empty_at_ms": 186,
+  "events": [
+    {
+      "at_ms": 10,
+      "pid": 1715,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 45,
+      "pid": 1716,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 47,
+      "pid": 1716,
+      "kind": "ready",
+      "signal": null
+    },
+    {
+      "at_ms": 52,
+      "pid": 1716,
+      "kind": "signal_received",
+      "signal": 2
+    },
+    {
+      "at_ms": 54,
+      "pid": 1716,
+      "kind": "cleanup_started",
+      "signal": null
+    },
+    {
+      "at_ms": 178,
+      "pid": 1716,
+      "kind": "cleanup_finished",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 186,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 186,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 47,
+  "shutdown_snapshot_at_ms": 548,
+  "verdict_at_ms": 648,
+  "observed_outcome": "FAIL",
+  "cleanup_started_at_ms": 648,
+  "cleanup_finished_at_ms": 649,
+  "findings": [
+    {
+      "id": "WRONG_SIGNAL",
+      "detail": "worker received a signal other than SIGTERM"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

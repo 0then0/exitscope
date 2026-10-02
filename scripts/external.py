@@ -211,6 +211,21 @@ def main():
             )
             if r["outcome"] != expected:
                 failures.append(label)
+            exit_code = {
+                "PASS": 0,
+                "FAIL": 1,
+                "UNRESOLVED": 2,
+                "INFRASTRUCTURE_ERROR": 3,
+            }[r["outcome"]]
+            if run.returncode != exit_code:
+                failures.append(label + ": exit code")
+            if r["cgroup"]:
+                if Path(r["cgroup"]).exists() or (
+                    Path(tempfile.gettempdir()) / Path(r["cgroup"]).name
+                ).exists():
+                    failures.append(label + ": cleanup resources remain")
+                if r["verdict_at_ms"] > r["cleanup_started_at_ms"]:
+                    failures.append(label + ": cleanup preceded verdict")
     if failures:
         raise SystemExit("unexpected outcomes: " + ", ".join(failures))
 

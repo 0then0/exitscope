@@ -1,0 +1,6 @@
+test_systemd_diagnostics_do_not_save_manager_environment (__main__.Documentation.test_systemd_diagnostics_do_not_save_manager_environment) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.032s
+
+OK

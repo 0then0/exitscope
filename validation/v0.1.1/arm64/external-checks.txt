@@ -1,0 +1,6 @@
+common-ancestor-denied uid=65534 INFRASTRUCTURE_ERROR
+delegated-success uid=65534 PASS
+pnpm-12.6.0-arm64 12.6.0 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN']
+pnpm-12.7.0-arm64 12.7.0 PASS []
+uv-0.5.1-arm64 uv 0.5.1 FAIL ['LIVE_MEMBERS', 'STDOUT_OPEN', 'STDERR_OPEN', 'SIGNAL_NOT_RECEIVED', 'CLEANUP_INCOMPLETE']
+uv-0.5.2-arm64 uv 0.5.2 PASS []

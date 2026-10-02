@@ -43,10 +43,19 @@ def wait_until(predicate, process=None):
 def worker(mode, directory):
     signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGTERM})
     connection = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection.settimeout(5)
     connection.connect(os.environ["EXIT_SCOPE_SOCKET"])
     event(connection, "handler_installed")
     event(connection, "ready")
     (directory / "ready").write_text(str(os.getpid()))
+    if mode.startswith("receipt-"):
+        signum = signal.sigwait({signal.SIGTERM})
+        if mode != "receipt-timely":
+            # Deliberately delay reporting AFTER actual receipt. This proves no
+            # kernel delivery claim; 1.3 s gives 800 ms beyond shutdown_ms.
+            time.sleep(1.3)
+        event(connection, "signal_received", signum)
+        return
     if mode == "late":
         # Escaped session lives well beyond the 200 ms shutdown deadline.
         time.sleep(0.8)
@@ -67,6 +76,16 @@ def worker(mode, directory):
 
 
 def wrapper(mode, directory):
+    if mode.startswith("receipt-"):
+        # Block before spawn; sigwait cannot race installing the wrapper handler.
+        signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGTERM})
+        child = subprocess.Popen(
+            [sys.executable, __file__, "worker", mode, str(directory)]
+        )
+        # Impact follows acknowledged worker readiness. Forward only that signal,
+        # then exit while the worker retains its independent output and IPC.
+        child.send_signal(signal.sigwait({signal.SIGTERM}))
+        return
     child = None
     signal.signal(signal.SIGTERM, lambda signum, frame: child.send_signal(signum))
     (directory / "root_pid").write_text(str(os.getpid()))
@@ -121,6 +140,7 @@ def run_case(args, mode):
             text=True,
         )
         paused = False
+        stdout = None
         try:
             wait_until(lambda: (directory / "ready").exists(), process)
             if graceful:
@@ -183,7 +203,10 @@ def run_case(args, mode):
                 process.send_signal(signal.SIGCONT)
             if process.poll() is None:
                 process.send_signal(signal.SIGTERM)
-                process.communicate(timeout=6)
+            if stdout is None:
+                stdout, stderr = process.communicate(timeout=6)
+                (args.reports / f"{mode}.json").write_text(stdout)
+                (args.reports / f"{mode}.stderr.txt").write_text(stderr)
 
 
 def main():
@@ -196,6 +219,83 @@ def main():
     args.reports.mkdir(parents=True, exist_ok=True)
     for mode in ["late", "killed", "truncated"]:
         run_case(args, mode)
+    for mode in ["receipt-late", "receipt-timely", "receipt-disabled"]:
+        run_receipt_case(args, mode)
+
+
+def run_receipt_case(args, mode):
+    with tempfile.TemporaryDirectory(prefix="exitscope-receipt-") as tmp:
+        directory = Path(tmp)
+        profile = {
+            "executable": sys.executable,
+            "args": [str(Path(__file__).resolve()), "wrapper", mode, tmp],
+            "cwd": tmp,
+            "scenario": "parent_sigterm",
+            "readiness": "fixture",
+            "readiness_ms": 10000,
+            "shutdown_ms": 500,
+            "output_ms": 3500,
+            "contract": {
+                "signal_receipt": mode != "receipt-disabled",
+                "cleanup_finished": False,
+                "root_waits_cleanup": False,
+                "no_survivors": False,
+                "output_eof": True,
+            },
+        }
+        config = directory / "config.json"
+        config.write_text(json.dumps(profile))
+        process = subprocess.Popen(
+            [
+                str(args.binary.resolve()),
+                "run",
+                "--config",
+                str(config),
+                "--cgroup-parent",
+                str(args.cgroup_parent),
+                "--json",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        stdout = None
+        try:
+            wait_until(lambda: (directory / "ready").exists(), process)
+            observer_cgroup = Path(f"/proc/{process.pid}/cgroup").read_text()
+            stdout, stderr = process.communicate(timeout=15)
+            (args.reports / f"{mode}.json").write_text(stdout)
+            (args.reports / f"{mode}.stderr.txt").write_text(stderr)
+            report = json.loads(stdout)
+            ids = {f["id"] for f in report["findings"]}
+            expected = "FAIL" if mode == "receipt-late" else "PASS"
+            assert report["outcome"] == report["observed_outcome"] == expected, report
+            assert process.returncode == (1 if expected == "FAIL" else 0)
+            assert ids == ({"SIGNAL_NOT_RECEIVED"} if expected == "FAIL" else set()), (
+                report
+            )
+            receipt = next(
+                e for e in report["events"] if e["kind"] == "signal_received"
+            )
+            deadline = report["impact_at_ms"] + profile["shutdown_ms"]
+            assert (receipt["at_ms"] <= deadline) == (mode == "receipt-timely"), report
+            assert report["root_exit"]["at_ms"] <= deadline, report
+            assert report["stdout"]["eof_before_deadline"]
+            assert report["stderr"]["eof_before_deadline"]
+            assert Path(report["cgroup"]).name not in observer_cgroup
+            assert not Path(report["cgroup"]).exists()
+            assert not (
+                Path(tempfile.gettempdir()) / Path(report["cgroup"]).name
+            ).exists()
+            assert report["verdict_at_ms"] <= report["cleanup_started_at_ms"]
+            print(mode, report["outcome"], sorted(ids), flush=True)
+        finally:
+            if process.poll() is None:
+                process.send_signal(signal.SIGTERM)
+            if stdout is None:
+                stdout, stderr = process.communicate(timeout=6)
+                (args.reports / f"{mode}.json").write_text(stdout)
+                (args.reports / f"{mode}.stderr.txt").write_text(stderr)
 
 
 if __name__ == "__main__":

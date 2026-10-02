@@ -1,0 +1,112 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling autocfg v1.5.1
+    Checking utf8parse v0.2.2
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+    Checking is_terminal_polyfill v1.70.2
+   Compiling libc v0.2.189
+    Checking anstyle-parse v1.0.0
+    Checking colorchoice v1.0.5
+    Checking anstyle-query v1.1.5
+   Compiling cfg_aliases v0.2.2
+    Checking anstyle v1.0.14
+   Compiling nix v0.31.3
+    Checking anstream v1.0.0
+   Compiling heck v0.5.0
+    Checking strsim v0.11.1
+   Compiling memoffset v0.9.1
+   Compiling serde v1.0.229
+    Checking clap_lex v1.1.1
+   Compiling serde_json v1.0.151
+    Checking clap_builder v4.6.7
+    Checking cfg-if v1.0.5
+    Checking itoa v1.0.18
+    Checking bitflags v2.13.2
+    Checking memchr v2.8.3
+   Compiling syn v3.0.6
+   Compiling clap_derive v4.6.7
+   Compiling serde_derive v1.0.229
+    Checking clap v4.6.7
+    Checking exitscope v0.1.1 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.77s
+   Compiling utf8parse v0.2.2
+   Compiling colorchoice v1.0.5
+   Compiling anstyle-query v1.1.5
+   Compiling anstyle v1.0.14
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling serde_core v1.0.229
+   Compiling clap_lex v1.1.1
+   Compiling strsim v0.11.1
+   Compiling libc v0.2.189
+   Compiling anstyle-parse v1.0.0
+   Compiling zmij v1.0.23
+   Compiling memoffset v0.9.1
+   Compiling itoa v1.0.18
+   Compiling anstream v1.0.0
+   Compiling cfg-if v1.0.5
+   Compiling bitflags v2.13.2
+   Compiling memchr v2.8.3
+   Compiling clap_builder v4.6.7
+   Compiling nix v0.31.3
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling clap v4.6.7
+   Compiling exitscope v0.1.1 (/work)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.36s
+     Running unittests src/main.rs (/tmp/exitscope-target/debug/deps/exitscope-9979f6d8cdb887c9)
+
+running 13 tests
+test model::tests::disabled_receipt_allows_late_evidence ... ok
+test linux::tests::proc_identity_is_own_process ... ok
+test model::tests::cleanup_cannot_erase_violation ... ok
+test model::tests::late_receipt_cannot_use_longer_output_deadline ... ok
+test model::tests::late_receipt_without_readiness_is_unresolved ... ok
+test model::tests::late_empty_snapshot_is_unresolved ... ok
+test model::tests::missing_receipt_depends_on_confirmed_readiness ... ok
+test model::tests::absent_telemetry_is_unresolved ... ok
+test model::tests::missing_wait_evidence_does_not_claim_early_root_exit ... ok
+test linux::tests::pidfd_reports_exit_without_reaping ... ok
+test model::tests::receipt_deadline_is_inclusive_and_relative_to_impact ... ok
+test model::tests::signal_and_wait_are_required ... ok
+test model::tests::verified_contract_passes ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling exitscope v0.1.1 (/work)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.32s
+test_bad_working_directory (__main__.Integration.test_bad_working_directory) ... ok
+test_correct_forwarding (__main__.Integration.test_correct_forwarding) ... ok
+test_exec_failure (__main__.Integration.test_exec_failure) ... ok
+test_exec_permission_denied (__main__.Integration.test_exec_permission_denied) ... ok
+test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched) ... ok
+test_group_kill (__main__.Integration.test_group_kill) ... ok
+test_intentional_background_contract (__main__.Integration.test_intentional_background_contract) ... ok
+test_interruption (__main__.Integration.test_interruption) ... ok
+test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass) ... ok
+test_live_root_during_unfinished_cleanup (__main__.Integration.test_live_root_during_unfinished_cleanup) ... ok
+test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes) ... ok
+test_missing_telemetry (__main__.Integration.test_missing_telemetry) ... ok
+test_no_permissions (__main__.Integration.test_no_permissions) ... ok
+test_not_cgroup (__main__.Integration.test_not_cgroup) ... ok
+test_optional_late_cleanup (__main__.Integration.test_optional_late_cleanup) ... ok
+test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve) ... ok
+test_premature_worker (__main__.Integration.test_premature_worker) ... ok
+test_readiness_failure (__main__.Integration.test_readiness_failure) ... ok
+test_root_does_not_wait (__main__.Integration.test_root_does_not_wait) ... ok
+test_survivor_other_group (__main__.Integration.test_survivor_other_group) ... ok
+test_survivor_other_session (__main__.Integration.test_survivor_other_session) ... ok
+test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof) ... ok
+test_wrong_signal (__main__.Integration.test_wrong_signal) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 11.269s
+
+OK
+late UNRESOLVED ['CGROUP_DEADLINE_UNOBSERVED']
+killed FAIL ['CLEANUP_INCOMPLETE']
+truncated FAIL ['CLEANUP_INCOMPLETE']
+receipt-late FAIL ['SIGNAL_NOT_RECEIVED']
+receipt-timely PASS []
+receipt-disabled PASS []

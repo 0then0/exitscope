@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "outcome": "FAIL",
+  "config": {
+    "cwd": "/tmp/exitscope-observer-b781g_h3",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 3000,
+    "shutdown_ms": 1000,
+    "output_ms": 2000,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": true,
+      "root_waits_cleanup": true,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1721-1790951302804867465",
+  "root": {
+    "pid": 1722,
+    "start_ticks": 514653,
+    "ppid": 1721,
+    "pgid": 1722,
+    "sid": 1722,
+    "state": "S"
+  },
+  "root_exit": {
+    "at_ms": 110,
+    "code": 0,
+    "signal": null
+  },
+  "launch_error": null,
+  "cgroup_empty_at_ms": 110,
+  "events": [
+    {
+      "at_ms": 10,
+      "pid": 1722,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 95,
+      "pid": 1723,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 97,
+      "pid": 1723,
+      "kind": "ready",
+      "signal": null
+    },
+    {
+      "at_ms": 99,
+      "pid": 1723,
+      "kind": "signal_received",
+      "signal": 15
+    },
+    {
+      "at_ms": 106,
+      "pid": 1723,
+      "kind": "cleanup_started",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 110,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 110,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 97,
+  "shutdown_snapshot_at_ms": 1100,
+  "verdict_at_ms": 2097,
+  "observed_outcome": "FAIL",
+  "cleanup_started_at_ms": 2097,
+  "cleanup_finished_at_ms": 2098,
+  "findings": [
+    {
+      "id": "CLEANUP_INCOMPLETE",
+      "detail": "worker did not complete cleanup"
+    }
+  ],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

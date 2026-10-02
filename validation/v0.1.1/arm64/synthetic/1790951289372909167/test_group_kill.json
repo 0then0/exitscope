@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "config": {
+    "cwd": "/work",
+    "scenario": "group_sigkill",
+    "readiness": "fixture",
+    "readiness_ms": 1200,
+    "shutdown_ms": 500,
+    "output_ms": 600,
+    "contract": {
+      "signal_receipt": false,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": true,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1668-1790951290754337042",
+  "root": {
+    "pid": 1669,
+    "start_ticks": 513448,
+    "ppid": 1668,
+    "pgid": 1669,
+    "sid": 1669,
+    "state": "S"
+  },
+  "root_exit": {
+    "at_ms": 42,
+    "code": null,
+    "signal": 9
+  },
+  "launch_error": null,
+  "cgroup_empty_at_ms": 42,
+  "events": [
+    {
+      "at_ms": 7,
+      "pid": 1669,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 37,
+      "pid": 1670,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 40,
+      "pid": 1670,
+      "kind": "ready",
+      "signal": null
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 42,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 42,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 40,
+  "shutdown_snapshot_at_ms": 541,
+  "verdict_at_ms": 641,
+  "observed_outcome": "PASS",
+  "cleanup_started_at_ms": 641,
+  "cleanup_finished_at_ms": 642,
+  "findings": [],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}

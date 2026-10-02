@@ -1,0 +1,287 @@
+test_bad_working_directory (__main__.Integration.test_bad_working_directory) ... FAIL
+test_correct_forwarding (__main__.Integration.test_correct_forwarding) ... FAIL
+test_exec_failure (__main__.Integration.test_exec_failure) ... FAIL
+test_exec_permission_denied (__main__.Integration.test_exec_permission_denied) ... FAIL
+test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched) ... FAIL
+test_group_kill (__main__.Integration.test_group_kill) ... FAIL
+test_intentional_background_contract (__main__.Integration.test_intentional_background_contract) ... FAIL
+test_interruption (__main__.Integration.test_interruption) ... FAIL
+test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass) ... FAIL
+test_live_root_during_unfinished_cleanup (__main__.Integration.test_live_root_during_unfinished_cleanup) ... FAIL
+test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes) ... FAIL
+test_missing_telemetry (__main__.Integration.test_missing_telemetry) ... FAIL
+test_no_permissions (__main__.Integration.test_no_permissions) ... ok
+test_not_cgroup (__main__.Integration.test_not_cgroup) ... ok
+test_optional_late_cleanup (__main__.Integration.test_optional_late_cleanup) ... FAIL
+test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve) ... FAIL
+test_premature_worker (__main__.Integration.test_premature_worker) ... FAIL
+test_readiness_failure (__main__.Integration.test_readiness_failure) ... FAIL
+test_root_does_not_wait (__main__.Integration.test_root_does_not_wait) ... FAIL
+test_survivor_other_group (__main__.Integration.test_survivor_other_group) ... FAIL
+test_survivor_other_session (__main__.Integration.test_survivor_other_session) ... FAIL
+test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof) ... FAIL
+test_wrong_signal (__main__.Integration.test_wrong_signal) ... FAIL
+
+======================================================================
+FAIL: test_bad_working_directory (__main__.Integration.test_bad_working_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 199, in test_bad_working_directory
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        r["launch_error"], {"stage": "working_directory", "errno": errno.ENOENT}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: None != {'stage': 'working_directory', 'errno': 2}
+
+======================================================================
+FAIL: test_correct_forwarding (__main__.Integration.test_correct_forwarding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 115, in test_correct_forwarding
+    self.assertEqual(r["outcome"], "PASS")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'PASS'
+- INFRASTRUCTURE_ERROR
++ PASS
+
+
+======================================================================
+FAIL: test_exec_failure (__main__.Integration.test_exec_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 192, in test_exec_failure
+    self.assertEqual(r["launch_error"], {"stage": "exec", "errno": errno.ENOENT})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != {'stage': 'exec', 'errno': 2}
+
+======================================================================
+FAIL: test_exec_permission_denied (__main__.Integration.test_exec_permission_denied)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 212, in test_exec_permission_denied
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        r["launch_error"], {"stage": "exec", "errno": errno.EACCES}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: None != {'stage': 'exec', 'errno': 13}
+
+======================================================================
+FAIL: test_foreign_process_untouched (__main__.Integration.test_foreign_process_untouched)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 228, in test_foreign_process_untouched
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_group_kill (__main__.Integration.test_group_kill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 154, in test_group_kill
+    self.assertEqual(r["outcome"], "PASS")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'PASS'
+- INFRASTRUCTURE_ERROR
++ PASS
+
+
+======================================================================
+FAIL: test_intentional_background_contract (__main__.Integration.test_intentional_background_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 297, in test_intentional_background_contract
+    self.assertEqual(r["outcome"], "PASS")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'PASS'
+- INFRASTRUCTURE_ERROR
++ PASS
+
+
+======================================================================
+FAIL: test_interruption (__main__.Integration.test_interruption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 219, in test_interruption
+    self.assertIn("RUNNER_INTERRUPTED", self.ids(r))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'RUNNER_INTERRUPTED' not found in {'INFRASTRUCTURE'}
+
+======================================================================
+FAIL: test_late_cleanup_cannot_pass (__main__.Integration.test_late_cleanup_cannot_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 257, in test_late_cleanup_cannot_pass
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_live_root_during_unfinished_cleanup (__main__.Integration.test_live_root_during_unfinished_cleanup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 282, in test_live_root_during_unfinished_cleanup
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_missing_forwarding_and_pipes (__main__.Integration.test_missing_forwarding_and_pipes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 129, in test_missing_forwarding_and_pipes
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_missing_telemetry (__main__.Integration.test_missing_telemetry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 184, in test_missing_telemetry
+    self.assertEqual(r["outcome"], "UNRESOLVED")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'UNRESOLVED'
+- INFRASTRUCTURE_ERROR
++ UNRESOLVED
+
+
+======================================================================
+FAIL: test_optional_late_cleanup (__main__.Integration.test_optional_late_cleanup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 267, in test_optional_late_cleanup
+    self.assertEqual(r["outcome"], "PASS")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'PASS'
+- INFRASTRUCTURE_ERROR
++ PASS
+
+
+======================================================================
+FAIL: test_output_flood_does_not_starve (__main__.Integration.test_output_flood_does_not_starve)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 250, in test_output_flood_does_not_starve
+    self.assertEqual(r["outcome"], "PASS")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'PASS'
+- INFRASTRUCTURE_ERROR
++ PASS
+
+
+======================================================================
+FAIL: test_premature_worker (__main__.Integration.test_premature_worker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 138, in test_premature_worker
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_readiness_failure (__main__.Integration.test_readiness_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 177, in test_readiness_failure
+    self.assertIn("READINESS_TIMEOUT", self.ids(r))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'READINESS_TIMEOUT' not found in {'INFRASTRUCTURE'}
+
+======================================================================
+FAIL: test_root_does_not_wait (__main__.Integration.test_root_does_not_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 149, in test_root_does_not_wait
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_survivor_other_group (__main__.Integration.test_survivor_other_group)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 165, in test_survivor_other_group
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_survivor_other_session (__main__.Integration.test_survivor_other_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 159, in test_survivor_other_session
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_survivors_independent_of_eof (__main__.Integration.test_survivors_independent_of_eof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 170, in test_survivors_independent_of_eof
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+======================================================================
+FAIL: test_wrong_signal (__main__.Integration.test_wrong_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/tests/integration.py", line 143, in test_wrong_signal
+    self.assertEqual(r["outcome"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'INFRASTRUCTURE_ERROR' != 'FAIL'
+- INFRASTRUCTURE_ERROR
++ FAIL
+
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.100s
+
+FAILED (failures=21)
+Traceback (most recent call last):
+  File "/work/tests/observer_regressions.py", line 307, in <module>
+    main()
+    ~~~~^^
+  File "/work/tests/observer_regressions.py", line 221, in main
+    run_case(args, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+  File "/work/tests/observer_regressions.py", line 145, in run_case
+    wait_until(lambda: (directory / "ready").exists(), process)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tests/observer_regressions.py", line 38, in wait_until
+    assert process.poll() is None, "runner exited before synchronization"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: runner exited before synchronization

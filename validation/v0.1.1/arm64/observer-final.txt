@@ -1,0 +1,6 @@
+late UNRESOLVED ['CGROUP_DEADLINE_UNOBSERVED']
+killed FAIL ['CLEANUP_INCOMPLETE']
+truncated FAIL ['CLEANUP_INCOMPLETE']
+receipt-late FAIL ['SIGNAL_NOT_RECEIVED']
+receipt-timely PASS []
+receipt-disabled PASS []

@@ -1,0 +1,79 @@
+PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=13.7
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+Linux 959ce68aa8a6 7.0.14-linuxkit #1 SMP PREEMPT Fri Sep 18 10:19:32 UTC 2026 aarch64 GNU/Linux
+rustc 1.99.0 (b940084d7 2026-09-28)
+info: downloading 2 components
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded anstream v1.0.0
+  Downloaded cfg_aliases v0.2.2
+  Downloaded memoffset v0.9.1
+  Downloaded anstyle-query v1.1.5
+  Downloaded clap_derive v4.6.7
+  Downloaded cfg-if v1.0.5
+  Downloaded anstyle-parse v1.0.0
+  Downloaded colorchoice v1.0.5
+  Downloaded heck v0.5.0
+  Downloaded strsim v0.11.1
+  Downloaded is_terminal_polyfill v1.70.2
+  Downloaded itoa v1.0.18
+  Downloaded quote v1.0.47
+  Downloaded clap_lex v1.1.1
+  Downloaded zmij v1.0.23
+  Downloaded anstyle v1.0.14
+  Downloaded utf8parse v0.2.2
+  Downloaded autocfg v1.5.1
+  Downloaded bitflags v2.13.2
+  Downloaded proc-macro2 v1.0.107
+  Downloaded serde_derive v1.0.229
+  Downloaded unicode-ident v1.0.26
+  Downloaded clap v4.6.7
+  Downloaded serde_core v1.0.229
+  Downloaded serde v1.0.229
+  Downloaded memchr v2.8.3
+  Downloaded serde_json v1.0.151
+  Downloaded clap_builder v4.6.7
+  Downloaded nix v0.31.3
+  Downloaded syn v3.0.6
+  Downloaded libc v0.2.189
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling utf8parse v0.2.2
+   Compiling autocfg v1.5.1
+   Compiling serde_core v1.0.229
+   Compiling cfg_aliases v0.2.2
+   Compiling colorchoice v1.0.5
+   Compiling anstyle-parse v1.0.0
+   Compiling anstyle-query v1.1.5
+   Compiling anstyle v1.0.14
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling libc v0.2.189
+   Compiling zmij v1.0.23
+   Compiling anstream v1.0.0
+   Compiling nix v0.31.3
+   Compiling strsim v0.11.1
+   Compiling memoffset v0.9.1
+   Compiling clap_lex v1.1.1
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling heck v0.5.0
+   Compiling clap_builder v4.6.7
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.6
+   Compiling cfg-if v1.0.5
+   Compiling bitflags v2.13.2
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.7
+   Compiling clap v4.6.7
+   Compiling exitscope v0.1.0 (/tmp/exitscope-baseline)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.18s

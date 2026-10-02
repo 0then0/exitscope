@@ -12,7 +12,7 @@
 Run a command, exercise its shutdown contract, and detect unfinished cleanup,
 surviving subprocesses, and output pipes that never close.
 
-ExitScope 0.1 is a Linux CLI for testing wrappers, task runners and launchers.
+ExitScope 0.1.1 is a Linux CLI for testing wrappers, task runners and launchers.
 It sends either SIGTERM to the wrapper PID alone or SIGKILL to its dedicated
 process group. It observes root exit, worker events, live cgroup members and
 stdout/stderr EOF independently. A successful harness cleanup never changes
@@ -104,6 +104,17 @@ EOFs. Setting `no_survivors: false` permits intentional background processes
 in the observation verdict; disposable run members are still killed afterward.
 SIGKILL profiles cannot require graceful events.
 
+When `signal_receipt` is enabled, SIGTERM confirmation must be observed at
+`signal_received.at_ms <= impact_at_ms + shutdown_ms` (inclusive boundary,
+integer monotonic milliseconds). This is the observer's receipt time, not the
+kernel's signal delivery time. A larger `output_ms` only extends the EOF window.
+Late confirmation remains in the trace, but with acknowledged worker readiness
+produces `SIGNAL_NOT_RECEIVED` and FAIL. Missing required telemetry without
+confirmed readiness remains UNRESOLVED unless another violation establishes FAIL.
+Disabling `signal_receipt` makes a late receipt evidence only: a selective contract
+requiring just timely root exit and output EOF can still PASS. Other enabled
+conditions keep their existing deadlines and semantics.
+
 ## Observation and telemetry
 
 The runner launches a fresh copy of itself as a gated launcher. It enters the
@@ -179,6 +190,8 @@ Stable finding IDs: `ROOT_DEADLINE`, `LIVE_MEMBERS`, `STDOUT_OPEN`, `STDERR_OPEN
 `SIGNAL_NOT_RECEIVED`, `WRONG_SIGNAL`, `CLEANUP_INCOMPLETE`, `ROOT_DID_NOT_WAIT`, `CLEANUP_DEADLINE`,
 `TELEMETRY_MISSING`, `CGROUP_DEADLINE_UNOBSERVED`, `READINESS_TIMEOUT`, `RUNNER_INTERRUPTED`, `INFRASTRUCTURE`,
 `OBSERVATION_ERROR`, `CLEANUP_ERROR`. IDs may have more detailed text per run.
+`SIGNAL_NOT_RECEIVED` means no SIGTERM confirmation by the shutdown deadline;
+its detail distinguishes an absent confirmation from an observed late one.
 
 `launch_error` is null or an object containing a bounded stage name and numeric
 errno. Stages distinguish signal mask, cgroup entry, session creation, working
@@ -228,11 +241,23 @@ python3 scripts/external.py --cgroup-parent /path/to/delegated/runs
 ```
 
 The external batch downloads SHA256-pinned upstream archives and uses disposable
-projects/caches. It currently pins Linux ARM64 assets. `--discover` is an explicit
+projects/caches. It pins Linux ARM64 and x86_64 assets. `--discover` is an explicit
 maintainer bootstrap that changes the source manifest; normal validation verifies
 it. Each batch writes a new directory below `validation/`; unexpected and unresolved
-outcomes are saved before checking expectations. CI uses the same engine on Linux
-ARM64, preserves artifacts even on failure, and checks Rust's minimum version.
+outcomes are saved before checking expectations. CI is configured to execute the
+same engine on native Linux ARM64 (`ubuntu-24.04-arm`) and x86_64 (`ubuntu-24.04`), preserves architecture
+specific artifacts even on failure, and checks Rust's minimum version. Formatting,
+clippy and minimum Rust checks run once; build, unit, integration, observer,
+delegation and all four pinned external cases run on each architecture.
+
+Local v0.1.1 evidence uses Debian 13 containers on Docker Desktop's Linux
+7.0.14-linuxkit: ARM64 execution is native and x86_64 execution uses emulation
+on the ARM64 development host, where `pidfd_open` returns ENOSYS and blocks runtime
+validation. x86_64 build and pure tests succeeded, but Linux conformance and its
+four external outcomes remain unverified. Hosted CI and the systemd user-manager
+recipe remain unverified in this milestone; the recipe requires a real suitable
+Linux host or disposable VM. Kernel 5.14 is a documented requirement, not an execution
+tested minimum. See the report for current acceptance status and exact commands.
 
 Own results, upstream reports, reproduction details and remaining uncertainty
 are distinguished in [docs/engineering-report.md](docs/engineering-report.md).

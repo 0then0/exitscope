@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "config": {
+    "cwd": "/tmp/exitscope-receipt-e1fcd1p4",
+    "scenario": "parent_sigterm",
+    "readiness": "fixture",
+    "readiness_ms": 10000,
+    "shutdown_ms": 500,
+    "output_ms": 3500,
+    "contract": {
+      "signal_receipt": true,
+      "cleanup_finished": false,
+      "root_waits_cleanup": false,
+      "no_survivors": false,
+      "output_eof": true
+    }
+  },
+  "environment": [
+    "os=linux; arch=aarch64",
+    "kernel=7.0.14-linuxkit",
+    "cgroup_v2=true; cgroup.kill writable; private run directory created",
+    "pidfd_open and pidfd polling available"
+  ],
+  "cgroup": "/sys/fs/cgroup/exitscope-tests/exitscope-1730-1790951310617996885",
+  "root": {
+    "pid": 1731,
+    "start_ticks": 515434,
+    "ppid": 1730,
+    "pgid": 1731,
+    "sid": 1731,
+    "state": "S"
+  },
+  "root_exit": {
+    "at_ms": 96,
+    "code": 0,
+    "signal": null
+  },
+  "launch_error": null,
+  "cgroup_empty_at_ms": 98,
+  "events": [
+    {
+      "at_ms": 12,
+      "pid": 1731,
+      "kind": "gated",
+      "signal": null
+    },
+    {
+      "at_ms": 87,
+      "pid": 1732,
+      "kind": "handler_installed",
+      "signal": null
+    },
+    {
+      "at_ms": 89,
+      "pid": 1732,
+      "kind": "ready",
+      "signal": null
+    },
+    {
+      "at_ms": 91,
+      "pid": 1732,
+      "kind": "signal_received",
+      "signal": 15
+    }
+  ],
+  "survivors": [],
+  "live_members_present": false,
+  "stdout": {
+    "eof_at_ms": 98,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "stderr": {
+    "eof_at_ms": 98,
+    "bytes": 0,
+    "eof_before_deadline": true
+  },
+  "impact_at_ms": 89,
+  "shutdown_snapshot_at_ms": 590,
+  "verdict_at_ms": 3590,
+  "observed_outcome": "PASS",
+  "cleanup_started_at_ms": 3590,
+  "cleanup_finished_at_ms": 3590,
+  "findings": [],
+  "cleanup": [
+    "cgroup.kill; empty confirmed; run cgroup removed",
+    "private IPC directory removed"
+  ],
+  "limitations": [
+    "Not a security sandbox; cooperative targets must not migrate out of the cgroup",
+    "cgroup.procs excludes zombies; no zombie-reaping conformance claim",
+    "PID/group signals do not reproduce terminal Ctrl-C",
+    "Observation timestamps are monotonic receipt times, not kernel exit timestamps"
+  ]
+}
