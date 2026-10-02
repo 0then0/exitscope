@@ -69,7 +69,7 @@ This is a setup example, not an automatic fallback; systemd versions and
 administrator policy differ. Moving the shell into `harness` avoids keeping
 the runner in a parent that may enable resource controllers. Verify delegation
 locally. Do not recursively chown the global cgroup hierarchy or make it
-world-writable. The tested environment and exact disposable Docker setup are
+world-writable. The tested environments and exact Docker and systemd setup commands are
 recorded in [the engineering report](docs/engineering-report.md).
 
 ## Configuration and workload injection
@@ -254,10 +254,12 @@ Local v0.1.1 evidence uses Debian 13 containers on Docker Desktop's Linux
 7.0.14-linuxkit: ARM64 execution is native and x86_64 execution uses emulation
 on the ARM64 development host, where `pidfd_open` returns ENOSYS and blocks runtime
 validation. x86_64 build and pure tests succeeded, but Linux conformance and its
-four external outcomes remain unverified. Hosted CI and the systemd user-manager
-recipe remain unverified in this milestone; the recipe requires a real suitable
-Linux host or disposable VM. Kernel 5.14 is a documented requirement, not an execution
-tested minimum. See the report for current acceptance status and exact commands.
+four external outcomes were not established by that emulation attempt. Subsequent
+hosted native ARM64 and x86_64 runs passed all suites and the four expected external
+cases on each architecture. The systemd recipe passed outside Docker on an Ubuntu
+24.04.5 x86_64 VM, kernel 6.17.0-1022-azure, systemd 255.4, under ordinary UID 1001
+inside an explicitly delegated service. Kernel 5.14 is a documented requirement,
+not an execution tested minimum. See the report for exact commands and evidence.
 
 Own results, upstream reports, reproduction details and remaining uncertainty
 are distinguished in [docs/engineering-report.md](docs/engineering-report.md).

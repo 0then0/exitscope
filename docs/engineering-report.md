@@ -3,7 +3,123 @@
 Date: 2026-10-02. All runtime results below are **our own Linux executions**,
 unless explicitly labelled upstream evidence or engineering inference.
 
-## v0.1.1 milestone status, 2026-10-02
+## Hosted acceptance and review follow-up, 2026-10-02
+
+**v0.1.1 acceptance is complete: ready for release and maintenance.** The initial
+local preparation and its unavailable environments remain below as historical
+evidence. Later authorized pushes made real hosted Linux execution available.
+No tag or release was published. No new runtime features or dependencies were added.
+
+Review identified one diagnostic risk: the proposed systemd recipe persisted
+`systemctl --user show-environment` output, which could contain imported credentials.
+The recipe and actual validation script now discard that output. The new
+`tests/documentation.py` executes both diagnostic blocks with a fake manager and
+a dummy secret, confirms the probe runs, and checks artifacts/stdout/stderr contain
+no secret. It passed locally and in CI; the old recipe reproducibly fails this
+regression. [Positive and negative evidence](../validation/v0.1.1/review-followup/)
+is retained. This controlled test is separate from actual systemd execution.
+
+### Native Linux execution and external results
+
+[Hosted run 37025805580](https://github.com/0then0/exitscope/actions/runs/37025805580),
+commit `a2c85cec16c5c48a33544b4429793af4276b0e06`, passed both native jobs:
+`ubuntu-24.04-arm` / Linux ARM64 and `ubuntu-24.04` / Linux x86_64. The Docker
+validation containers used Debian 13 (trixie), Rust 1.99.0 and the native host's
+Linux **6.17.0-1022-azure** kernel. No cross-compilation or emulation substituted
+for execution. On **each architecture**:
+
+- build, **13 Rust tests**, **23 integration tests**, **6 observer regressions**,
+  the documentation secret regression and both delegation checks passed;
+- migration denial produced `cgroup_join` / EACCES and INFRASTRUCTURE_ERROR;
+  explicitly delegated UID 65534 produced PASS in the disposable container;
+- **pnpm 12.6.0 FAIL, pnpm 12.7.0 PASS, uv 0.5.1 FAIL, uv 0.5.2 PASS**, using
+  the existing adapters, pinned upstream archives and common Rust engine;
+- run cgroup removal / exit mapping checks passed, with verdict-before-cleanup
+  and enabled receipt conditions rejecting late evidence.
+
+Formatting, clippy and Rust 1.85.0 `cargo check --locked` passed once in the ARM64
+job. The hosted jobs ran `scripts/linux-checks.sh`, `tests/delegation.py` and
+`scripts/external.py` with per-architecture report paths; exact expanded commands
+and execution output are retained in the
+[ARM64 job log](../validation/v0.1.1/hosted/37025805580/arm64-job.txt) and
+[x86_64 job log](../validation/v0.1.1/hosted/37025805580/x86_64-job.txt).
+Both architecture artifacts uploaded successfully, including all target outcomes;
+[artifact identities, SHA256 and download endpoints](../validation/v0.1.1/hosted/37025805580/artifacts.json)
+are preserved. Raw JSON reports remain in those GitHub artifacts. Copying the
+connector's temporary artifact URLs into the local workspace returned HTTP 403;
+the complete decoded job logs were retained locally instead. This transport
+limitation does not replace or invalidate uploaded execution reports.
+
+### Actual systemd user-manager validation
+
+The x86_64 hosted **Ubuntu 24.04.5 LTS** VM ran systemd **255.4-1ubuntu8.17**,
+Linux **6.17.0-1022-azure**, unified cgroup v2. This validation ran **outside Docker**
+as ordinary **UID 1001 (runner)**. Explicit workflow setup started the existing
+user manager; it did not install a service/watchdog or change cgroup permissions.
+The transient delegated service shell ran the engine under the ordinary user.
+
+Exact setup / execution commands (the workflow expands absolute repository paths):
+
+```sh
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+sudo systemctl start "user@$(id -u).service"
+cargo build --locked --target-dir /tmp/exitscope-systemd-target
+reports="$PWD/validation/ci/x86_64/systemd"
+script -q -e -c "systemd-run --user --pty --collect --property=Delegate=yes bash '$PWD/scripts/systemd-checks.sh' '/tmp/exitscope-systemd-target/debug/exitscope' '$reports'" /dev/null
+```
+
+`script` supplies the terminal required by the documented `--pty` recipe in the
+noninteractive CI shell; no target PTY scenario was added. The production engine
+still gives the workload `/dev/null` stdin and independently observes output pipes.
+A native host build avoids depending on the container's glibc version.
+
+Inside that shell, `scripts/systemd-checks.sh` performs the README's explicit setup:
+derive the service cgroup, create `harness` and `runs`, move the shell to `harness`,
+then pass only `runs` as the engine's delegated parent. The recorded service
+ancestor and its `cgroup.procs` are owned by runner. Observations:
+
+- correct forwarding / finished cleanup: **PASS**, verified by the existing
+  `test_correct_forwarding` assertion;
+- broken forwarding / surviving worker: expected **FAIL**, verified by
+  `test_missing_forwarding_and_pipes`, including survivor and signal findings;
+- **6 observer regressions passed**, including timely receipt PASS, late receipt
+  FAIL and disabled receipt PASS. They explicitly read the observer's actual
+  cgroup and verify it remains outside the test cgroup;
+- resource audit confirmed **all 8 systemd run cgroups and private IPC directories
+  removed**, and no directories remained under `runs`, which was then removed;
+- the delegated shell was in
+  `/user.slice/user-1001.slice/user@1001.service/app.slice/run-u0.service/harness`;
+  the transient service exited successfully and used `--collect`.
+
+The independent insufficient-migration-permission test remains the UID 65534
+container check on both native architectures. It is not mislabeled as systemd
+ordinary-user evidence. The engine never starts a manager, elevates privileges,
+recursively chowns a hierarchy, or installs a service.
+
+### Retained attempts and guarantee boundaries
+
+The first native hosted batch,
+[37024615472](https://github.com/0then0/exitscope/actions/runs/37024615472), already
+passed both architectures and external cases; its logs remain under
+[hosted/37024615472](../validation/v0.1.1/hosted/37024615472/).
+Systemd setup was then added. Two unsuccessful validation attempts are retained:
+[37025136734](../validation/v0.1.1/hosted/37025136734/x86_64-job.txt) could not create
+its reports within a Docker-root-owned directory; host-side directory creation
+fixed that without permission weakening. [37025608115](../validation/v0.1.1/hosted/37025608115/x86_64-job.txt)
+started a valid delegated ordinary-user service but its default home working
+directory hid repository tests; the script now explicitly enters the repository.
+Neither attempt was a target forwarding result; expected target outcomes were
+never adjusted. The subsequent full run passed.
+
+The prior local x86_64 emulation failure remains valid historical evidence about
+that environment. It is superseded for compatibility acceptance by native hosted
+execution, not hidden. Kernel **5.14 remains untested**; the minimum is based on
+documented syscall availability. Systemd policy on other distributions remains
+environment dependent. SIGKILL/host failure cleanup limitations and all original
+non-goals remain. Upstream binary validation is not evidence of external adoption.
+
+## Initial v0.1.1 preparation, 2026-10-02
 
 **Prepared locally, acceptance incomplete, not ready to release or declare the
 maintenance transition complete.** ARM64 correctness and external validation
