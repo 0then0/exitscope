@@ -1,0 +1,35 @@
+version: 2
+
+# Batch routine updates monthly; security updates keep their separate policy.
+updates:
+  - package-ecosystem: cargo
+    directory: "/"
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      rust-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 1
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    commit-message:
+      prefix: chore
+      include: scope
