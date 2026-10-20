@@ -78,7 +78,7 @@ jobs:
           python3 tests/systemd_timeout.py --manager-probe "$reports/timeout-probe"
           # Allocate the terminal required by the README recipe in a CI shell.
           sh scripts/systemd-run-checks.sh /tmp/exitscope-systemd-target/debug/exitscope "$reports"
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: all-validation-outcomes-${{ matrix.arch }}
