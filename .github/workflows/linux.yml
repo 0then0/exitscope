@@ -5,8 +5,12 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   linux:
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:

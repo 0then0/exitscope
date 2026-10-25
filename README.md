@@ -18,6 +18,15 @@ process group. It observes root exit, worker events, live cgroup members and
 stdout/stderr EOF independently. A successful harness cleanup never changes
 a failed shutdown check into PASS.
 
+## Project status
+
+The latest stable release is [v0.1.1](https://github.com/0then0/exitscope/releases/tag/v0.1.1).
+ExitScope is in maintenance: correctness, compatibility and documented use come
+first; new features require a confirmed need. See the [changelog](CHANGELOG.md)
+for release history and [CONTRIBUTING.md](CONTRIBUTING.md) for development and
+review expectations. Participation follows the [Code of Conduct](CODE_OF_CONDUCT.md);
+report suspected vulnerabilities according to [SECURITY.md](SECURITY.md).
+
 ## Requirements and installation
 
 - Linux kernel **5.14+**, unified cgroup v2, mounted procfs exposing the run's PIDs.

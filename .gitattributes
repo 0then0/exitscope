@@ -1,0 +1,5 @@
+# Normalize source and documentation across contributor platforms.
+* text=auto eol=lf
+
+Cargo.lock text
+*.svg text

@@ -1,0 +1,28 @@
+name: Confirmed use case
+description: Describe a concrete need before proposing a feature for this maintenance project.
+title: "[Use case]: "
+body:
+  - type: markdown
+    attributes:
+      value: ExitScope is in maintenance. New features need demonstrated demand and should preserve the small engine and documented scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Observed problem and use case
+      description: What real workload cannot be validated today? Include a concrete example and who needs it.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing approaches
+      description: Explain why profiles, contract switches, adapters or other tools do not meet the need.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Smallest useful change
+      description: Describe observable behavior and how to validate it. Identify effects on documented non-goals.
+    validations:
+      required: true
